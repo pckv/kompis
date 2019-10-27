@@ -1,5 +1,7 @@
 # Kompis | backend
 
+[![Build Status](https://travis-ci.com/pckv/kompis.svg?branch=master)](https://travis-ci.com/pckv/kompis)
+
 ## What is Kompis?
 
 The Kompis project aims to make it easy to for everyone to get home after a night out. 
