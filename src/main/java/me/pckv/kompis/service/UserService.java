@@ -40,7 +40,7 @@ public class UserService {
                 });
     }
 
-    public void deleteById(long id) {
+    public void deleteUserById(long id) {
         repository.deleteById(id);
     }
 }
