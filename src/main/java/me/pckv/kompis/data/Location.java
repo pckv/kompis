@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -20,4 +18,5 @@ public class Location {
     @NotNull private float latitude;
     @NotNull private float longitude;
     @NotNull private float accuracy;
+    @OneToOne @MapsId private Listing listing;
 }
