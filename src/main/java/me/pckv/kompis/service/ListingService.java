@@ -31,9 +31,14 @@ public class ListingService {
     }
 
 
-    //TODO: Deavtivate/Activate listing
+    //TODO: Deactivate/Activate listing
+    public void acitvateListing() {
 
+    }
 
     //TODO: Assign logged in User to listing
+    public void assignUserToListning() {
+
+    }
 
 }
