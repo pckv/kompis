@@ -1,7 +1,7 @@
 package me.pckv.kompis.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "\"user\"")
 public class User {

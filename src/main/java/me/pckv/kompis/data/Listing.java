@@ -1,7 +1,7 @@
 package me.pckv.kompis.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Listing {
     @Id @GeneratedValue private long id;
