@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("/users")
 public class UserController {
 
     private UserService userService;
@@ -21,27 +21,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> all() {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public User newUser(@RequestBody User newUser) {
         return userService.createUser(newUser);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User one(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public User replaceUser(@RequestBody User newUser, @PathVariable long id) {
         return userService.replaceUser(newUser, id);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id) {
         userService.deleteById(id);
     }
