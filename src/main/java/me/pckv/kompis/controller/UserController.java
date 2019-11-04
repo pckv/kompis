@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/users")
+@RestController
+@RequestMapping(path = "/users")
 public class UserController {
 
     private UserService userService;
@@ -28,6 +30,7 @@ public class UserController {
 
     @PostMapping
     public User newUser(@RequestBody User newUser) {
+        System.out.println("HALLO");
         return userService.createUser(newUser);
     }
 
@@ -37,8 +40,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User replaceUser(@RequestBody User newUser, @PathVariable long id) {
-        return userService.replaceUser(newUser, id);
+    public User replaceUser(@PathVariable long id, @RequestBody User newUser) {
+        return userService.replaceUser(id, newUser);
     }
 
     @DeleteMapping("/{id}")
