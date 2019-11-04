@@ -2,6 +2,10 @@
 /src/main/resources/application.properties
 
 
+# Remove all IntelliJ related project files
+.idea/
+
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
 # Compiled class file
