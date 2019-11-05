@@ -1,7 +1,5 @@
 package me.pckv.kompis.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.UserService;
@@ -18,25 +16,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
     private UserService userService;
+    private JwtManager jwtManager;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, JwtManager jwtManager) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.jwtManager = jwtManager;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            // Parse user object from server request
+            // Parse User ResponseBody object from server request
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
-            // Return a new token
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), new ArrayList<>()));
 
         } catch (IOException e) {
@@ -46,18 +44,18 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+        // Find the User object of the logged in user
         User user = userService.getUser(((org.springframework.security.core.userdetails.User) authResult.getPrincipal()).getUsername());
 
-        String token = JWT.create()
-                .withSubject(user.getEmail())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET));
+        // Generate the token and add it to the headers
+        String token = jwtManager.generateToken(user.getEmail());
+        response.addHeader("Authorization", "Bearer " + token);
 
-        response.addHeader(SecurityConstants.AUTHORIZATION_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-
+        // Convert the User object to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(user);
 
+        // Add the User object to the response
         PrintWriter writer = response.getWriter();
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setCharacterEncoding("UTF-8");

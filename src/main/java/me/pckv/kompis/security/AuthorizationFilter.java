@@ -1,7 +1,5 @@
 package me.pckv.kompis.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,16 +14,20 @@ import java.util.ArrayList;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authenticationManager) {
+    private JwtManager jwtManager;
+
+    public AuthorizationFilter(AuthenticationManager authenticationManager, JwtManager jwtManager) {
         super(authenticationManager);
+
+        this.jwtManager = jwtManager;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = getToken(request);
 
-        // Create the authentication if the token is a valid JWT token
-        if (token != null && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+        // Create the authentication if a token is supplied
+        if (token != null) {
             UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -39,10 +41,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        String username = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET))
-                .build()
-                .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                .getSubject();
+        String username = jwtManager.getUsername(token);
         if (username == null) {
             return null;
         }
@@ -51,6 +50,11 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private String getToken(HttpServletRequest request) {
-        return request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
+        }
+
+        return token.replace("Bearer ", "");
     }
 }

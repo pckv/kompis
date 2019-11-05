@@ -19,21 +19,23 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserService userService;
+    private JwtManager jwtManager;
 
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService, JwtManager jwtManager) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
+        this.jwtManager = jwtManager;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SecurityConstants.USER_CREATE_PATH).permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new AuthenticationFilter(authenticationManager(), userService))
-                .addFilter(new AuthorizationFilter(authenticationManager()))
+                .addFilter(new AuthenticationFilter(authenticationManager(), userService, jwtManager))
+                .addFilter(new AuthorizationFilter(authenticationManager(), jwtManager))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
