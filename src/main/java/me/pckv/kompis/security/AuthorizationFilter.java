@@ -24,37 +24,20 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = getToken(request);
+        String token = request.getHeader("Authorization");
 
-        // Create the authentication if a token is supplied
-        if (token != null) {
-            UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Check that we received a token
+        if (token != null && token.startsWith("Bearer ")) {
+
+            // Verify the token and retrieve the username
+            String username = jwtManager.getUsername(token.replace("Bearer ", ""));
+
+            // Set the authentication using the username if it was verified
+            if (username != null) {
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>()));
+            }
         }
 
         chain.doFilter(request, response);
-    }
-
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = getToken(request);
-        if (token == null) {
-            return null;
-        }
-
-        String username = jwtManager.getUsername(token);
-        if (username == null) {
-            return null;
-        }
-
-        return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
-    }
-
-    private String getToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !token.startsWith("Bearer ")) {
-            return null;
-        }
-
-        return token.replace("Bearer ", "");
     }
 }

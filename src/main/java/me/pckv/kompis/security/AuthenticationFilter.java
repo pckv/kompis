@@ -8,7 +8,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +18,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private AuthenticationManager authenticationManager;
     private UserService userService;
     private JwtManager jwtManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, JwtManager jwtManager) {
+        super(new AntPathRequestMatcher("/login", "POST"));
+
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtManager = jwtManager;
