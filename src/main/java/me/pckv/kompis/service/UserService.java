@@ -2,7 +2,7 @@ package me.pckv.kompis.service;
 
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.data.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import me.pckv.kompis.security.PasswordHasher;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -12,11 +12,9 @@ import java.util.List;
 public class UserService {
 
     private UserRepository repository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -24,7 +22,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(PasswordHasher.hash(user.getPassword()));
         return repository.save(user);
     }
 

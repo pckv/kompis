@@ -39,7 +39,7 @@ public class JwtManager {
         return Jwts.builder().setSubject(subject).signWith(key).setExpiration(getExpiration()).compact();
     }
 
-    public String getUsername(String token) {
+    public String getSubject(String token) {
         try {
             return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
         } catch (SignatureException e) {
