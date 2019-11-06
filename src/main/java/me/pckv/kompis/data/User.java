@@ -1,5 +1,6 @@
 package me.pckv.kompis.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "\"user\"")
 public class User {
     @Id @GeneratedValue private long id;
-    @NonNull private String email;
-    @NonNull private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @NonNull private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @NonNull private String password;
     @NonNull private String displayName;
 }

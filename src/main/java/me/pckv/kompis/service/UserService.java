@@ -1,46 +1,93 @@
 package me.pckv.kompis.service;
 
 import me.pckv.kompis.data.User;
-import me.pckv.kompis.data.UserRepository;
+import me.pckv.kompis.repository.UserRepository;
+import me.pckv.kompis.security.JwtManager;
+import me.pckv.kompis.security.PasswordUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
+
     private UserRepository repository;
+    private JwtManager jwtManager;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, JwtManager jwtManager) {
         this.repository = repository;
+        this.jwtManager = jwtManager;
     }
 
-    public List<User> getAllUsers() {
-        return repository.findAll();
+    /**
+     * Create a user if no user with the same email exists.
+     *
+     * @param user the user to create
+     * @return the user that is created
+     */
+    public User createUser(User user) {
+        User existingUser = repository.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        user.setPassword(PasswordUtil.encrypt(user.getPassword()));
+        return repository.save(user);
     }
 
-    public User createUser(User newUser) {
-        return repository.save(newUser);
-    }
-
+    /**
+     * Find a user by id and return it.
+     *
+     * @param id the id of the user
+     * @return user if found
+     */
     public User getUser(Long id) {
-        return repository.getOne(id);
+        User user = repository.getOne(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        return user;
     }
 
-    public User replaceUser(User newUser, long id) {
-        return repository.findById(id)
-                .map(user -> {
-                    user.setDisplayName(newUser.getDisplayName());
-                    user.setEmail(newUser.getEmail());
-                    user.setPassword(newUser.getPassword());
-                    return repository.save(user);
-                })
-                .orElseGet(() -> {
-                    newUser.setId(id);
-                    return repository.save(newUser);
-                });
+    /**
+     * Find a user by email and return it.
+     *
+     * @param email the email of the user
+     * @return user if found
+     */
+    public User getUser(String email) {
+        User user = repository.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return user;
     }
 
-    public void deleteUserById(long id) {
-        repository.deleteById(id);
+    /**
+     * Delete a user from the repository.
+     *
+     * @param user the user to delete
+     */
+    public void deleteUser(User user) {
+        repository.delete(user);
+    }
+
+    /**
+     * Verify password given for the user and return a new JSON web token.
+     *
+     * @param user     the user to login to
+     * @param password the password of the account to login to
+     * @return a new JSON web token
+     */
+    public String login(User user, String password) {
+        // Verify the given password
+        if (!PasswordUtil.verify(password, user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        // Generate the JSON web token for the user and send it back
+        return jwtManager.generateToken(user.getEmail());
     }
 }
