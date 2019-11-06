@@ -31,7 +31,7 @@ public class UserController {
      * @return the user that is created
      */
     @PostMapping
-    public User newUser(@RequestBody User newUser) {
+    public User createUser(@RequestBody User newUser) {
         return userService.createUser(newUser);
     }
 
@@ -43,7 +43,7 @@ public class UserController {
      */
     @Authorized
     @GetMapping("/{id}")
-    public User one(@PathVariable Long id) {
+    public User getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
