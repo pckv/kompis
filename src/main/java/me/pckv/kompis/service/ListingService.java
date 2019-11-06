@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class ListingService {
+
     private ListingRepository repository;
 
     public ListingService(ListingRepository repository) {
