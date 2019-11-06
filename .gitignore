@@ -1,5 +1,9 @@
 ### Kompis
-/src/main/resources/application.properties
+/src/main/resources/application-dev.properties
+/src/main/resources/application-prod.properties
+
+/src/test/resources/application-dev.properties
+/src/test/resources/application-prod.properties
 
 
 # Remove all IntelliJ related project files
@@ -114,3 +118,4 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+

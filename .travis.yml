@@ -1,3 +1,10 @@
 language: java
 sudo: false
-script: mvn clean verify
+
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database travistest;' -U postgres
+
+script:
+  - mvn clean verify -Dspring.profiles.active=travis
