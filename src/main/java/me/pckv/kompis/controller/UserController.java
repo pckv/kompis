@@ -1,5 +1,7 @@
 package me.pckv.kompis.controller;
 
+import me.pckv.kompis.annotation.Authorized;
+import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;

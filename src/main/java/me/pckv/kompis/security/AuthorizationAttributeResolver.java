@@ -1,6 +1,6 @@
 package me.pckv.kompis.security;
 
-import me.pckv.kompis.controller.LoggedIn;
+import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.UserService;
 import org.springframework.core.MethodParameter;

@@ -3,7 +3,9 @@ package me.pckv.kompis.service;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.data.UserRepository;
 import me.pckv.kompis.security.PasswordUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,7 +32,12 @@ public class UserService {
     }
 
     public User getUser(String email) {
-        return repository.findByEmail(email);
+        User user = repository.findByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return user;
     }
 
     public User replaceUser(long userId, User newUser) {

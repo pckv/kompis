@@ -1,6 +1,6 @@
 package me.pckv.kompis.security;
 
-import me.pckv.kompis.controller.Authorized;
+import me.pckv.kompis.annotation.Authorized;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

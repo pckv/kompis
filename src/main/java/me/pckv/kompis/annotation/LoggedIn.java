@@ -1,4 +1,4 @@
-package me.pckv.kompis.controller;
+package me.pckv.kompis.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
