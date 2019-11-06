@@ -18,9 +18,7 @@ import javax.persistence.Table;
 @Table(name = "\"user\"")
 public class User {
     @Id @GeneratedValue private long id;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NonNull
-    private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @NonNull private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) @NonNull private String password;
     @NonNull private String displayName;
 }
