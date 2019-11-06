@@ -1,5 +1,6 @@
-package me.pckv.kompis.data;
+package me.pckv.kompis.repository;
 
+import me.pckv.kompis.data.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

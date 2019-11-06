@@ -1,7 +1,7 @@
 package me.pckv.kompis.service;
 
 import me.pckv.kompis.data.User;
-import me.pckv.kompis.data.UserRepository;
+import me.pckv.kompis.repository.UserRepository;
 import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;
 import org.springframework.http.HttpStatus;
