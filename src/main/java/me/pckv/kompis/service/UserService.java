@@ -2,6 +2,7 @@ package me.pckv.kompis.service;
 
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.data.UserRepository;
+import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import java.util.List;
 public class UserService {
 
     private UserRepository repository;
+    private JwtManager jwtManager;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, JwtManager jwtManager) {
         this.repository = repository;
+        this.jwtManager = jwtManager;
     }
 
     public List<User> getAllUsers() {
@@ -56,5 +59,22 @@ public class UserService {
 
     public void deleteById(long id) {
         repository.deleteById(id);
+    }
+
+    /**
+     * Verify password given for the user and return a new JSON web token.
+     *
+     * @param user     the user to login to
+     * @param password the password of the account to login to
+     * @return a new JSON web token
+     */
+    public String login(User user, String password) {
+        // Verify the given password
+        if (!PasswordUtil.verify(password, user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        // Generate the JSON web token for the user and send it back
+        return jwtManager.generateToken(user.getEmail());
     }
 }
