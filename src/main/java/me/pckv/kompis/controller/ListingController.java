@@ -63,9 +63,7 @@ public class ListingController {
     @GetMapping("/{id}/activate")
     public Listing activateListing(@PathVariable long id, @LoggedIn User user) {
         Listing listing = listingService.getListing(id);
-        listingService.activateListing(listing, user);
-
-        return listingService.updateListing(listing);
+        return listingService.activateListing(listing, user);
     }
 
     /**
@@ -79,9 +77,7 @@ public class ListingController {
     @GetMapping("/{id}/deactivate")
     public Listing deactivateListing(@PathVariable long id, @LoggedIn User user) {
         Listing listing = listingService.getListing(id);
-        listingService.deactivateListing(listing, user);
-
-        return listingService.updateListing(listing);
+        return listingService.deactivateListing(listing, user);
     }
 
     /**

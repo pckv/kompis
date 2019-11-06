@@ -45,16 +45,6 @@ public class ListingService {
     }
 
     /**
-     * Update listing by saving it to the repository again.
-     *
-     * @param listing the listing to update
-     * @return the updated listing
-     */
-    public Listing updateListing(Listing listing) {
-        return repository.save(listing);
-    }
-
-    /**
      * Get all listings.
      *
      * @return a list of all listings.
@@ -67,14 +57,16 @@ public class ListingService {
      * Activate a listing if the provided user if the owner of the listing.
      *
      * @param listing the listing to activate
-
+     * @param user the user to compare with owner
+     * @return the updated listing
      */
-    public void activateListing(Listing listing, User user) {
+    public Listing activateListing(Listing listing, User user) {
         if (!listing.getOwner().getEmail().equals(user.getEmail())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setActive(true);
+        return repository.save(listing);
     }
 
     /**
@@ -82,13 +74,15 @@ public class ListingService {
      *
      * @param listing the listing to deactivate
      * @param user the user to compare with owner
+     * @return the updated listing
      */
-    public void deactivateListing(Listing listing, User user) {
+    public Listing deactivateListing(Listing listing, User user) {
         if (!listing.getOwner().getEmail().equals(user.getEmail())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setActive(false);
+        return repository.save(listing);
     }
 
     /**
@@ -114,6 +108,6 @@ public class ListingService {
      */
     public Listing assignUserToListing(Listing listing, User assignee) {
         listing.setAssignee(assignee);
-        return updateListing(listing);
+        return repository.save(listing);
     }
 }
