@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @Service
 public class UserService {
 
@@ -21,19 +19,43 @@ public class UserService {
         this.jwtManager = jwtManager;
     }
 
-    public List<User> getAllUsers() {
-        return repository.findAll();
-    }
-
+    /**
+     * Create a user if no user with the same email exists.
+     *
+     * @param user the user to create
+     * @return the user that is created
+     */
     public User createUser(User user) {
+        User existingUser = repository.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
         user.setPassword(PasswordUtil.encrypt(user.getPassword()));
         return repository.save(user);
     }
 
+    /**
+     * Find a user by id and return it.
+     *
+     * @param id the id of the user
+     * @return user if found
+     */
     public User getUser(Long id) {
-        return repository.getOne(id);
+        User user = repository.getOne(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        return user;
     }
 
+    /**
+     * Find a user by email and return it.
+     *
+     * @param email the email of the user
+     * @return user if found
+     */
     public User getUser(String email) {
         User user = repository.findByEmail(email);
         if (user == null) {
@@ -43,22 +65,13 @@ public class UserService {
         return user;
     }
 
-    public User replaceUser(long userId, User newUser) {
-        return repository.findById(userId)
-                .map(user -> {
-                    user.setDisplayName(newUser.getDisplayName());
-                    user.setEmail(newUser.getEmail());
-                    user.setPassword(newUser.getPassword());
-                    return repository.save(user);
-                })
-                .orElseGet(() -> {
-                    newUser.setId(userId);
-                    return repository.save(newUser);
-                });
-    }
-
-    public void deleteById(long id) {
-        repository.deleteById(id);
+    /**
+     * Delete a user from the repository.
+     *
+     * @param user the user to delete
+     */
+    public void deleteUser(User user) {
+        repository.delete(user);
     }
 
     /**
