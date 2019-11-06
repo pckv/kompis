@@ -6,4 +6,4 @@ services:
 before_script:
   - psql -c 'create database travistest;' -U postgres
 
-script: mvn clean verify -Dspring.datasource.url=jdbc:postgresql://localhost:5432/travistest -Dspring.datasource.username=postgres -Dspring.datasource.password=
+script: mvn clean verify -Dspring.config.location=.travis.properties
