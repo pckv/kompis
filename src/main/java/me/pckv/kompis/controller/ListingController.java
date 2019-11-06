@@ -5,6 +5,7 @@ import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.ListingService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,57 @@ public class ListingController {
     public Listing assignListing(@PathVariable long id, @LoggedIn User assignee) {
         Listing listing = listingService.getListing(id);
         return listingService.assignUserToListing(listing, assignee);
+    }
+
+    /**
+     * Activate a listing if the logged in user is the owner of the listing.
+     *
+     * @param id   the id of the
+     * @param user the logged in user to compare with owner
+     * @return the updated listing
+     */
+    @Authorized
+    @GetMapping("/{id}/activate")
+    public Listing activateListing(@PathVariable long id, @LoggedIn User user) {
+        Listing listing = listingService.getListing(id);
+        listingService.activateListing(listing, user);
+
+        return listingService.updateListing(listing);
+    }
+
+    /**
+     * Deactivate a listing if the logged in user is the owner of the listing.
+     *
+     * @param id   the id of the
+     * @param user the logged in user to compare with owner
+     * @return the updated listing
+     */
+    @Authorized
+    @GetMapping("/{id}/deactivate")
+    public Listing deactivateListing(@PathVariable long id, @LoggedIn User user) {
+        Listing listing = listingService.getListing(id);
+        listingService.deactivateListing(listing, user);
+
+        return listingService.updateListing(listing);
+    }
+
+    /**
+     * Delete listing if the logged in user is the owner of the listing.
+     *
+     * @param id   the id of the listing to delete
+     * @param user the logged in user to compare with owner
+     */
+    @Authorized
+    @DeleteMapping("/{id}")
+    public void deleteListing(@PathVariable long id, @LoggedIn User user) {
+        Listing listing = listingService.getListing(id);
+        listingService.deleteListing(listing, user);
+    }
+
+    @Authorized
+    @GetMapping("/{id}")
+    public Listing getListing(@PathVariable long id) {
+        return listingService.getListing(id);
     }
 
     /**

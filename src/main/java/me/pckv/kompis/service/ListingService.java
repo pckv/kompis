@@ -64,21 +64,45 @@ public class ListingService {
     }
 
     /**
-     * Activate a listing.
+     * Activate a listing if the provided user if the owner of the listing.
      *
      * @param listing the listing to activate
+
      */
-    public void activateListing(Listing listing) {
+    public void activateListing(Listing listing, User user) {
+        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         listing.setActive(true);
     }
 
     /**
-     * Deactivate a listing.
+     * Deactivate a listing if the provided user if the owner of the listing.
      *
      * @param listing the listing to deactivate
+     * @param user the user to compare with owner
      */
-    public void deactivateListing(Listing listing) {
+    public void deactivateListing(Listing listing, User user) {
+        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         listing.setActive(false);
+    }
+
+    /**
+     * Delete listing if the provided user is the owner of the listing.
+     *
+     * @param listing the listing to delete
+     * @param user    the user to compare with owner
+     */
+    public void deleteListing(Listing listing, User user) {
+        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        repository.delete(listing);
     }
 
     /**
