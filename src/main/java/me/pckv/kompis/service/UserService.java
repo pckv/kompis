@@ -26,7 +26,7 @@ public class UserService {
      * @return the user that is created
      */
     public User createUser(User user) {
-        User existingUser = getUser(user.getEmail());
+        User existingUser = repository.findByEmail(user.getEmail());
         if (existingUser != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
