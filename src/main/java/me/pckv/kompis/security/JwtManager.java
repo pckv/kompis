@@ -69,7 +69,7 @@ public class JwtManager {
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
             // Reject expired tokens
-            if (claims.getExpiration().after(new Date())) {
+            if (claims.getExpiration().before(new Date())) {
                 return null;
             }
 
