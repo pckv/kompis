@@ -4,8 +4,7 @@ sudo: false
 services:
   - postgresql
 before_script:
-  - echo mvn clean verify -Dspring.config.location=$TRAVIS_BUILD_DIR/.travis.properties
   - psql -c 'create database travistest;' -U postgres
 
 script:
-  - mvn clean verify -Dspring.config.location=$TRAVIS_BUILD_DIR/.travis.properties
+  - mvn clean verify -Dspring.datasource.url=jdbc:postgresql://localhost:5432/travistest -Dspring.datasource.username=postgres -Dspring.datasource.password=
