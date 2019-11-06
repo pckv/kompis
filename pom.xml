@@ -100,6 +100,15 @@
 
     <profiles>
         <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+        </profile>
+        <profile>
             <id>travis</id>
         </profile>
     </profiles>
