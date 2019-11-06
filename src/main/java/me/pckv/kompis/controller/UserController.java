@@ -72,4 +72,10 @@ public class UserController {
 
         return user;
     }
+
+    @Authorized
+    @GetMapping("/current")
+    public User currentUser(@LoggedIn User current) {
+        return current;
+    }
 }

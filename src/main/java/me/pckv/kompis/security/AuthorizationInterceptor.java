@@ -46,7 +46,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
         // Add the token back to the response and add the email as the logged in user
         response.addHeader("Authorization", "Bearer " + token);
-        request.setAttribute("principal", email);
+        request.setAttribute("loggedInEmail", email);
 
         return true;
     }
