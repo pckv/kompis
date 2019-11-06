@@ -1,8 +1,11 @@
 package me.pckv.kompis.service;
 
 import me.pckv.kompis.data.Listing;
-import me.pckv.kompis.data.ListingRepository;
+import me.pckv.kompis.data.User;
+import me.pckv.kompis.repository.ListingRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,31 +17,79 @@ public class ListingService {
         this.repository = repository;
     }
 
-    public Listing createListing(Listing newListing) {
-        return repository.save(newListing);
+    /**
+     * Create a new listing and set the logged in user as the owner.
+     *
+     * @param listing the listing to create
+     * @param owner   the user that will be the owner of the listing
+     * @return the created listing
+     */
+    public Listing createListing(Listing listing, User owner) {
+        listing.setOwner(owner);
+        return repository.save(listing);
     }
 
-    public void deleteListingById(Long id) {
-        repository.deleteById(id);
-    }
-
+    /**
+     * Find a listing by id and return it.
+     *
+     * @param id the id of the listing to find
+     * @return the found listing
+     */
     public Listing getListing(Long id) {
+        Listing listing = repository.getOne(id);
+        if (listing == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         return repository.getOne(id);
     }
 
+    /**
+     * Update listing by saving it to the repository again.
+     *
+     * @param listing the listing to update
+     * @return the updated listing
+     */
+    public Listing updateListing(Listing listing) {
+        return repository.save(listing);
+    }
+
+    /**
+     * Get all listings.
+     *
+     * @return a list of all listings.
+     */
     public List<Listing> getAllListings() {
         return repository.findAll();
     }
 
-
-    //TODO: Deactivate/Activate listing
-    public void acitvateListing() {
-
+    /**
+     * Activate a listing.
+     *
+     * @param listing the listing to activate
+     */
+    public void activateListing(Listing listing) {
+        listing.setActive(true);
     }
 
-    //TODO: Assign logged in User to listing
-    public void assignUserToListning() {
-
+    /**
+     * Deactivate a listing.
+     *
+     * @param listing the listing to deactivate
+     */
+    public void deactivateListing(Listing listing) {
+        listing.setActive(false);
     }
 
+    /**
+     * Assign a user to the listing and update it.
+     *
+     * @param listing  the listing to assign the user to
+     * @param assignee the user to assign to the listing
+     * @return the updated listing
+     */
+    public Listing assignUserToListing(Listing listing, User assignee) {
+        listing.setAssignee(assignee);
+        return updateListing(listing);
+    }
 }
