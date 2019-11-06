@@ -2,7 +2,7 @@ package me.pckv.kompis.controller;
 
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.security.JwtManager;
-import me.pckv.kompis.security.PasswordHasher;
+import me.pckv.kompis.security.PasswordUtil;
 import me.pckv.kompis.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,7 +62,7 @@ public class UserController {
         User user = userService.getUser(loginUser.getEmail());
 
         // Verify the given password
-        if (!PasswordHasher.verify(user, loginUser.getPassword())) {
+        if (!PasswordUtil.verify(loginUser.getPassword(), user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
