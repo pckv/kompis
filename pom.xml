@@ -98,4 +98,10 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>travis</id>
+        </profile>
+    </profiles>
+
 </project>
