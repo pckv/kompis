@@ -4,18 +4,24 @@ import me.pckv.kompis.security.AuthorizationAttributeResolver;
 import me.pckv.kompis.security.AuthorizationInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * Context for adding runtime handlers. This adds the authorization preHandler
+ * and the @LoggedIn argument resolver.
+ */
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+@EnableWebMvc
+public class WebMvcContext implements WebMvcConfigurer {
 
     private AuthorizationInterceptor authorizationInterceptor;
     private AuthorizationAttributeResolver authorizationAttributeResolver;
 
-    public AppConfig(AuthorizationInterceptor authorizationInterceptor, AuthorizationAttributeResolver authorizationAttributeResolver) {
+    public WebMvcContext(AuthorizationInterceptor authorizationInterceptor, AuthorizationAttributeResolver authorizationAttributeResolver) {
         this.authorizationInterceptor = authorizationInterceptor;
         this.authorizationAttributeResolver = authorizationAttributeResolver;
     }
