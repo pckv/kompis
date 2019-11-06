@@ -1,6 +1,5 @@
 package me.pckv.kompis;
 
-import me.pckv.kompis.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +22,6 @@ public class UserControllerTest {
 
     private static boolean dataLoaded = false;
     @Autowired private MockMvc mvc;
-    @Autowired private UserService userService;
 
     @Before
     public void setUp() throws Exception {
