@@ -22,6 +22,15 @@ public class ListingService {
     }
 
     /**
+     * Get all listings.
+     *
+     * @return a list of all listings.
+     */
+    public List<Listing> getAllListings() {
+        return repository.findAll();
+    }
+
+    /**
      * Create a new listing and set the logged in user as the owner.
      *
      * @param listing the listing to create
@@ -49,12 +58,17 @@ public class ListingService {
     }
 
     /**
-     * Get all listings.
+     * Delete listing if the provided user is the owner of the listing.
      *
-     * @return a list of all listings.
+     * @param listing the listing to delete
+     * @param user    the user to compare with owner
      */
-    public List<Listing> getAllListings() {
-        return repository.findAll();
+    public void deleteListing(Listing listing, User user) {
+        if (!listing.isOwner(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        repository.delete(listing);
     }
 
     /**
@@ -65,7 +79,7 @@ public class ListingService {
      * @return the updated listing
      */
     public Listing activateListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+        if (!listing.isOwner(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
@@ -81,26 +95,12 @@ public class ListingService {
      * @return the updated listing
      */
     public Listing deactivateListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+        if (!listing.isOwner(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setActive(false);
         return repository.save(listing);
-    }
-
-    /**
-     * Delete listing if the provided user is the owner of the listing.
-     *
-     * @param listing the listing to delete
-     * @param user    the user to compare with owner
-     */
-    public void deleteListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        repository.delete(listing);
     }
 
     /**
@@ -112,6 +112,22 @@ public class ListingService {
      */
     public Listing assignUserToListing(Listing listing, User assignee) {
         listing.setAssignee(assignee);
+        return repository.save(listing);
+    }
+
+    /**
+     * Unassign
+     *
+     * @param listing the listing to unassign
+     * @param user    the user that unassigns the listing (must be owner or assignee)
+     * @return the updated listing
+     */
+    public Listing unassignUserFromListing(Listing listing, User user) {
+        if (!listing.isOwner(user) && !listing.isAssignee(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        listing.setAssignee(null);
         return repository.save(listing);
     }
 }

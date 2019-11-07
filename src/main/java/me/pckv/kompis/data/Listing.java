@@ -22,4 +22,28 @@ public class Listing {
     // @NonNull @OneToOne private Location location;
     @ManyToOne private User owner;
     @ManyToOne private User assignee;
+
+    /**
+     * Returns true if the given user is the owner.
+     *
+     * @param user the user to compare
+     * @return true if the given user is the owner.
+     */
+    public boolean isOwner(User user) {
+        return user.equals(owner);
+    }
+
+    /**
+     * Returns true if the given user is the assignee.
+     *
+     * @param user the user to compare
+     * @return true if the given user is the assignee
+     */
+    public boolean isAssignee(User user) {
+        if (assignee == null) {
+            return false;
+        }
+
+        return user.equals(assignee);
+    }
 }
