@@ -4,6 +4,7 @@ import me.pckv.kompis.data.User;
 import me.pckv.kompis.repository.UserRepository;
 import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +15,7 @@ public class UserService {
     private UserRepository repository;
     private JwtManager jwtManager;
 
+    @Autowired
     public UserService(UserRepository repository, JwtManager jwtManager) {
         this.repository = repository;
         this.jwtManager = jwtManager;

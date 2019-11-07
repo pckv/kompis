@@ -2,6 +2,7 @@ package me.pckv.kompis.resolver;
 
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.service.ListingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -24,6 +25,7 @@ public class ListingAttributeResolver implements HandlerMethodArgumentResolver {
 
     private ListingService listingService;
 
+    @Autowired
     public ListingAttributeResolver(ListingService listingService) {
         this.listingService = listingService;
     }

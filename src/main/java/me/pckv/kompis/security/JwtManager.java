@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -24,6 +25,7 @@ public class JwtManager {
     private JwtProperties jwtProperties;
     private Key key;
 
+    @Autowired
     public JwtManager(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
 
