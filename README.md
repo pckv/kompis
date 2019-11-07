@@ -10,11 +10,23 @@ We will provide a platform where users can ask for someone to drive them home, o
 
 ## API
 
+#### Users
+- [Create user](#create-user) : `POST /users`
+- [Authorize](#authorize) : `POST /users/authorize`
+- [Get user](#get-specific-user) : `GET /users/{id:number}`
+- [Get current user](#get-current-user) : `GET /users/current`
+- [Delete current user](#delete-current-user) : `DELETE /users/current`
+
+## Documentation
+
 ### Users
 
+#### Create user
 ```
 POST /users
 ```
+
+Creates a new user that can be logged into.
 
 **Request**
 
@@ -52,9 +64,12 @@ Body:
 - `409 CONFLICT` if a user with the given email exists
 
 ---
+#### Authorize
 ```
-POST /users/login
+POST /users/authorize
 ```
+
+Receive authorization for use with endpoints requiring authorization.
 
 **Request**
 
@@ -92,9 +107,12 @@ Body:
 - `409 CONFLICT` if a user with the given email exists
 
 ---
+#### Get specific user
 ```
 GET /users/{id:number}
 ```
+
+Get the user with the given ID.
 
 **Request**
 
@@ -125,9 +143,12 @@ Body:
 - `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
+#### Get current user
 ```
 GET /users/current
 ```
+
+Get the current authorized user.
 
 **Request**
 
@@ -156,9 +177,12 @@ Body:
 - `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
+#### Delete current user
 ```
 DELETE /users/current
 ```
+
+Delete the current authorized user. The client should get rid of the `Authorization` token manually.
 
 **Request**
 
