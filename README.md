@@ -9,7 +9,6 @@ The Kompis project aims to make it easy to for everyone to get home after a nigh
 We will provide a platform where users can ask for someone to drive them home, or drivers to advertise when they are available.
 
 ## API
-
 #### Users
 - [Create user](#create-user) : `POST /users`
 - [Authorize](#authorize) : `POST /users/authorize`
@@ -17,10 +16,18 @@ We will provide a platform where users can ask for someone to drive them home, o
 - [Get current user](#get-current-user) : `GET /users/current`
 - [Delete current user](#delete-current-user) : `DELETE /users/current`
 
+#### Listings
+- [Get listings](#get-listings) : `GET /listings`
+- [Create listing](#create-listing) : `POST /listings`
+- [Get listing](#get-listing) : `GET /listings/{id:number}`
+- [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
+- [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
+- [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
+- [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
+- [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
+
 ## Documentation
-
 ### Users
-
 #### Create user
 ```
 POST /users
@@ -201,5 +208,275 @@ Authorization: Bearer xxx.yyy.zzz
 ```
 
 - `403 FORBIDDEN` if `Authorization` header is invalid
+
+### Listings
+#### Get listings
+```
+GET /listings
+```
+
+Gets a list of all listings.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Content-Type: application/json
+Authorization: Bearer xxx.yyy.zzz
+```
+
+Body:
+```json
+[
+  {
+    "id": 2,
+    "title": "Need pickup at Oslo",
+    "driver": false,
+    "active": true,
+    "owner": {
+      "id": 1,
+      "displayName": "Roger Doger"
+    }, 
+    "assignee": null
+  }, ...
+]
+```
+
+---
+#### Create listing
+```
+POST /listings
+```
+
+Creates a new listing owned by the current logged in user.
+
+**Request**
+
+Headers: 
+```
+Content-Type: application/json
+Authorization: Bearer xxx.yyy.zzz
+```
+ 
+Body:
+```json
+{
+  "title": "Need pickup at Oslo",
+  "driver": false
+}
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Content-Type: application/json
+Authorization: Bearer xxx.yyy.zzz
+```
+
+Body:
+```json
+{
+  "id": 2,
+  "title": "Need pickup at Oslo",
+  "driver": false,
+  "active": true,
+  "owner": {
+    "id": 1,
+    "displayName": "Roger Doger"
+  }, 
+  "assignee": null
+}
+```
+
+---
+#### Get listing
+```
+GET /listings/{id:number}
+```
+
+Gets the listing with the given ID.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Content-Type: application/json
+Authorization: Bearer xxx.yyy.zzz
+```
+
+Body:
+```json
+{
+  "id": 2,
+  "title": "Need pickup at Oslo",
+  "driver": false,
+  "active": true,
+  "owner": {
+    "id": 1,
+    "displayName": "Roger Doger"
+  }, 
+  "assignee": null
+}
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+
+---
+#### Delete listing
+```
+DELETE /listings/{id:number}
+```
+
+Delete the listing with the given ID if it is owned by the current authorized user.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+- `403 FORBIDDEN` if the listing is not owned by the current authorized user
+
+---
+#### Activate listing
+```
+GET /listings/{id:number}/activate
+```
+
+Activate the listing with the given ID if it is owned by the current authorized user.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+- `403 FORBIDDEN` if the listing is not owned by the current authorized user
+
+---
+#### Deactivate listing
+```
+GET /listings/{id:number}/deactivate
+```
+
+Deactivate the listing with the given ID if it is owned by the current authorized user.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+- `403 FORBIDDEN` if the listing is not owned by the current authorized user
+
+---
+#### Assign current user to listing
+```
+GET /listings/{id:number}/assign
+```
+
+Assign the current logged in user to the listing with the given ID
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+- `409 CONFLICT` if the listing already has an assignee
+
+---
+#### Unassign user from listing
+```
+GET /listings/{id:number}/unassign
+```
+
+If the current authorized user is the owner of the listing with the given ID, the assignee will
+be removed from the listing. If the current authorized user is assigned to the listing, they
+will remove themselves from the listing.
+
+**Request**
+
+Headers: 
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+**Responses**
+
+- `200 OK` on success
+
+Headers:
+```
+Authorization: Bearer xxx.yyy.zzz
+```
+
+- `404 NOT FOUND` if a listing with the given ID was not found
+- `409 FORBIDDEN` if you either don't own the listing, or are not assigned to the listing
 
 ---
