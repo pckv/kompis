@@ -3,6 +3,7 @@ package me.pckv.kompis.resolver;
 import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -21,6 +22,7 @@ public class AuthorizationAttributeResolver implements HandlerMethodArgumentReso
 
     private UserService userService;
 
+    @Autowired
     public AuthorizationAttributeResolver(UserService userService) {
         this.userService = userService;
     }

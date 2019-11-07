@@ -3,6 +3,7 @@ package me.pckv.kompis;
 import me.pckv.kompis.resolver.AuthorizationAttributeResolver;
 import me.pckv.kompis.resolver.ListingAttributeResolver;
 import me.pckv.kompis.security.AuthorizationInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,6 +26,7 @@ public class WebMvcContext implements WebMvcConfigurer {
     private AuthorizationAttributeResolver authorizationAttributeResolver;
     private ListingAttributeResolver listingAttributeResolver;
 
+    @Autowired
     public WebMvcContext(AuthorizationInterceptor authorizationInterceptor, AuthorizationAttributeResolver authorizationAttributeResolver, ListingAttributeResolver listingAttributeResolver) {
         this.authorizationInterceptor = authorizationInterceptor;
         this.authorizationAttributeResolver = authorizationAttributeResolver;
