@@ -5,6 +5,7 @@ import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.ListingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class ListingController {
 
     private ListingService listingService;
 
+    @Autowired
     public ListingController(ListingService listingService) {
         this.listingService = listingService;
     }

@@ -1,6 +1,7 @@
 package me.pckv.kompis.security;
 
 import me.pckv.kompis.annotation.Authorized;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -18,6 +19,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
     private JwtManager jwtManager;
 
+    @Autowired
     public AuthorizationInterceptor(JwtManager jwtManager) {
         this.jwtManager = jwtManager;
     }

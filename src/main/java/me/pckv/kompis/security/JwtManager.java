@@ -1,11 +1,12 @@
 package me.pckv.kompis.security;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -24,6 +25,7 @@ public class JwtManager {
     private JwtProperties jwtProperties;
     private Key key;
 
+    @Autowired
     public JwtManager(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
 
@@ -66,15 +68,8 @@ public class JwtManager {
      */
     public String getSubject(String token) {
         try {
-            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
-
-            // Reject expired tokens
-            if (claims.getExpiration().before(new Date())) {
-                return null;
-            }
-
-            return claims.getSubject();
-        } catch (SignatureException e) {
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
+        } catch (SignatureException | ExpiredJwtException e) {
             return null;
         }
     }

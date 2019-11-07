@@ -3,6 +3,7 @@ package me.pckv.kompis.service;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.repository.ListingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +16,7 @@ public class ListingService {
 
     private ListingRepository repository;
 
+    @Autowired
     public ListingService(ListingRepository repository) {
         this.repository = repository;
     }
