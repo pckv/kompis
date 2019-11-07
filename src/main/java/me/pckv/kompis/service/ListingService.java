@@ -76,7 +76,6 @@ public class ListingService {
      *
      * @param listing the listing to activate
      * @param user the user to compare with owner
-     * @return the updated listing
      */
     public void activateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
@@ -92,7 +91,6 @@ public class ListingService {
      *
      * @param listing the listing to deactivate
      * @param user the user to compare with owner
-     * @return the updated listing
      */
     public void deactivateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
@@ -108,7 +106,6 @@ public class ListingService {
      *
      * @param listing  the listing to assign the user to
      * @param assignee the user to assign to the listing
-     * @return the updated listing
      */
     public void assignUserToListing(Listing listing, User assignee) {
         if (listing.hasAssignee()) {
@@ -119,11 +116,12 @@ public class ListingService {
     }
 
     /**
-     * Unassign
+     * If the current authorized user is the owner of the listing with the given ID,
+     * the assignee will be removed from the listing. If the current authorized user
+     * is assigned to the listing, they will remove themselves from the listing.
      *
      * @param listing the listing to unassign
      * @param user    the user that unassigns the listing (must be owner or assignee)
-     * @return the updated listing
      */
     public void unassignUserFromListing(Listing listing, User user) {
         if (!listing.isOwner(user) && !listing.isAssignee(user)) {

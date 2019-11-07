@@ -79,7 +79,6 @@ public class ListingController {
      *
      * @param listing the listing assigned by the path variable
      * @param user the logged in user to compare with owner
-     * @return the updated listing
      */
     @Authorized
     @GetMapping("/{listingId}/activate")
@@ -92,7 +91,6 @@ public class ListingController {
      *
      * @param listing the listing assigned by the path variable
      * @param user the logged in user to compare with owner
-     * @return the updated listing
      */
     @Authorized
     @GetMapping("/{listingId}/deactivate")
@@ -105,7 +103,6 @@ public class ListingController {
      *
      * @param listing the listing assigned by the path variable
      * @param assignee the user to assign to the listing
-     * @return the updated listing
      */
     @Authorized
     @GetMapping("/{listingId}/assign")
@@ -120,7 +117,6 @@ public class ListingController {
      *
      * @param listing the listing to unassign
      * @param user    the user that unassigns the listing (must be owner or assignee)
-     * @return the updated listing
      */
     @Authorized
     @GetMapping("/{listingId}/unassign")
