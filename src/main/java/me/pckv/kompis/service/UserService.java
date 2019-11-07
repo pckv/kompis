@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -43,9 +45,9 @@ public class UserService {
      * @param id the id of the user
      * @return user if found
      */
-    public User getUser(Long id) {
-        User user = repository.getOne(id);
-        if (user == null) {
+    public Optional<User> getUser(Long id) {
+        Optional<User> user = repository.findById(id);
+        if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
