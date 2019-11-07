@@ -1,21 +1,21 @@
 package me.pckv.kompis.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
-@AllArgsConstructor
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Location {
     @Id @GeneratedValue private long id;
-    @NotNull private float latitude;
-    @NotNull private float longitude;
-    @NotNull private float accuracy;
+    @NonNull private float latitude;
+    @NonNull private float longitude;
+    @NonNull private float accuracy;
 }
