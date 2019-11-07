@@ -1,4 +1,4 @@
-package me.pckv.kompis.security;
+package me.pckv.kompis.resolver;
 
 import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.User;
@@ -32,7 +32,7 @@ public class AuthorizationAttributeResolver implements HandlerMethodArgumentReso
     }
 
     @Override
-    public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+    public User resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         // Get the email of the logged in user from the AuthorizationInterceptor preHandler and resolve the user object
         String email = (String) Objects.requireNonNull(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).getAttribute("loggedInEmail");
         return userService.getUser(email);
