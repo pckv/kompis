@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/listing")
+@RequestMapping(path = "/listings")
 public class ListingController {
 
     private ListingService listingService;
@@ -24,6 +24,17 @@ public class ListingController {
     @Autowired
     public ListingController(ListingService listingService) {
         this.listingService = listingService;
+    }
+
+    /**
+     * Get all listings.
+     *
+     * @return a list of all listings
+     */
+    @Authorized
+    @GetMapping
+    public List<Listing> getAllListings() {
+        return listingService.getAllListings();
     }
 
     /**
@@ -40,16 +51,27 @@ public class ListingController {
     }
 
     /**
-     * Assign a user to the listing and update it.
+     * Get a listing.
      *
      * @param listing the listing assigned by the path variable
-     * @param assignee the user to assign to the listing
-     * @return the updated listing
+     * @return the listing with the given ID
      */
     @Authorized
-    @GetMapping("/{listingId}/assign")
-    public Listing assignListing(Listing listing, @LoggedIn User assignee) {
-        return listingService.assignUserToListing(listing, assignee);
+    @GetMapping("/{listingId}")
+    public Listing getListing(Listing listing) {
+        return listing;
+    }
+
+    /**
+     * Delete listing if the logged in user is the owner of the listing.
+     *
+     * @param listing the listing assigned by the path variable
+     * @param user the logged in user to compare with owner
+     */
+    @Authorized
+    @DeleteMapping("/{listingId}")
+    public void deleteListing(Listing listing, @LoggedIn User user) {
+        listingService.deleteListing(listing, user);
     }
 
     /**
@@ -79,37 +101,28 @@ public class ListingController {
     }
 
     /**
-     * Delete listing if the logged in user is the owner of the listing.
+     * Assign a user to the listing and update it.
      *
      * @param listing the listing assigned by the path variable
-     * @param user the logged in user to compare with owner
+     * @param assignee the user to assign to the listing
+     * @return the updated listing
      */
     @Authorized
-    @DeleteMapping("/{listingId}")
-    public void deleteListing(Listing listing, @LoggedIn User user) {
-        listingService.deleteListing(listing, user);
+    @GetMapping("/{listingId}/assign")
+    public Listing assignListing(Listing listing, @LoggedIn User assignee) {
+        return listingService.assignUserToListing(listing, assignee);
     }
 
     /**
-     * Get a listing.
+     * Unassign a user from the listing.
      *
-     * @param listing the listing assigned by the path variable
-     * @return the listing with the given ID
+     * @param listing the listing to unassign
+     * @param user    the user that unassigns the listing (must be owner or assignee)
+     * @return the updated listing
      */
     @Authorized
-    @GetMapping("/{listingId}")
-    public Listing getListing(Listing listing) {
-        return listing;
-    }
-
-    /**
-     * Get all listings.
-     *
-     * @return a list of all listings
-     */
-    @Authorized
-    @GetMapping
-    public List<Listing> getAllListings() {
-        return listingService.getAllListings();
+    @GetMapping("/{listingId}/unassign")
+    public Listing unassignListing(Listing listing, @LoggedIn User user) {
+        return listingService.unassignUserFromListing(listing, user);
     }
 }
