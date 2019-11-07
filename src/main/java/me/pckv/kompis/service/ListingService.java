@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ListingService {
@@ -37,12 +38,12 @@ public class ListingService {
      * @return the found listing
      */
     public Listing getListing(Long id) {
-        Listing listing = repository.getOne(id);
-        if (listing == null) {
+        Optional<Listing> listing = repository.findById(id);
+        if (listing.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return repository.getOne(id);
+        return listing.get();
     }
 
     /**
