@@ -46,4 +46,13 @@ public class Listing {
 
         return user.equals(assignee);
     }
+
+    /**
+     * Check if the listing has a assignee.
+     *
+     * @return true if the listing has an assignee
+     */
+    public boolean hasAssignee() {
+        return assignee != null;
+    }
 }

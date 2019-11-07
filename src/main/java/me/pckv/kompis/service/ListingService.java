@@ -78,13 +78,13 @@ public class ListingService {
      * @param user the user to compare with owner
      * @return the updated listing
      */
-    public Listing activateListing(Listing listing, User user) {
+    public void activateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setActive(true);
-        return repository.save(listing);
+        repository.save(listing);
     }
 
     /**
@@ -94,13 +94,13 @@ public class ListingService {
      * @param user the user to compare with owner
      * @return the updated listing
      */
-    public Listing deactivateListing(Listing listing, User user) {
+    public void deactivateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setActive(false);
-        return repository.save(listing);
+        repository.save(listing);
     }
 
     /**
@@ -110,9 +110,12 @@ public class ListingService {
      * @param assignee the user to assign to the listing
      * @return the updated listing
      */
-    public Listing assignUserToListing(Listing listing, User assignee) {
+    public void assignUserToListing(Listing listing, User assignee) {
+        if (listing.hasAssignee()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         listing.setAssignee(assignee);
-        return repository.save(listing);
+        repository.save(listing);
     }
 
     /**
@@ -122,12 +125,12 @@ public class ListingService {
      * @param user    the user that unassigns the listing (must be owner or assignee)
      * @return the updated listing
      */
-    public Listing unassignUserFromListing(Listing listing, User user) {
+    public void unassignUserFromListing(Listing listing, User user) {
         if (!listing.isOwner(user) && !listing.isAssignee(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         listing.setAssignee(null);
-        return repository.save(listing);
+        repository.save(listing);
     }
 }

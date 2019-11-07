@@ -27,7 +27,7 @@ public class ListingController {
     }
 
     /**
-     * Get all listings.
+     * Gets a list of all listings.
      *
      * @return a list of all listings
      */
@@ -38,7 +38,7 @@ public class ListingController {
     }
 
     /**
-     * Create a new listing and set the logged in user as the owner.
+     * Creates a new listing owned by the current logged in user.
      *
      * @param listing the listing to create
      * @param owner the logged in user that will be the owner of the listing
@@ -51,7 +51,7 @@ public class ListingController {
     }
 
     /**
-     * Get a listing.
+     * Gets the listing with the given ID.
      *
      * @param listing the listing assigned by the path variable
      * @return the listing with the given ID
@@ -63,7 +63,7 @@ public class ListingController {
     }
 
     /**
-     * Delete listing if the logged in user is the owner of the listing.
+     * Delete the listing with the given ID if it is owned by the current authorized user.
      *
      * @param listing the listing assigned by the path variable
      * @param user the logged in user to compare with owner
@@ -75,7 +75,7 @@ public class ListingController {
     }
 
     /**
-     * Activate a listing if the logged in user is the owner of the listing.
+     * Activate the listing with the given ID if it is owned by the current authorized user.
      *
      * @param listing the listing assigned by the path variable
      * @param user the logged in user to compare with owner
@@ -83,12 +83,12 @@ public class ListingController {
      */
     @Authorized
     @GetMapping("/{listingId}/activate")
-    public Listing activateListing(Listing listing, @LoggedIn User user) {
-        return listingService.activateListing(listing, user);
+    public void activateListing(Listing listing, @LoggedIn User user) {
+        listingService.activateListing(listing, user);
     }
 
     /**
-     * Deactivate a listing if the logged in user is the owner of the listing.
+     * Deactivate the listing with the given ID if it is owned by the current authorized user.
      *
      * @param listing the listing assigned by the path variable
      * @param user the logged in user to compare with owner
@@ -96,12 +96,12 @@ public class ListingController {
      */
     @Authorized
     @GetMapping("/{listingId}/deactivate")
-    public Listing deactivateListing(Listing listing, @LoggedIn User user) {
-        return listingService.deactivateListing(listing, user);
+    public void deactivateListing(Listing listing, @LoggedIn User user) {
+        listingService.deactivateListing(listing, user);
     }
 
     /**
-     * Assign a user to the listing and update it.
+     * Assign the current logged in user to the listing with the given ID.
      *
      * @param listing the listing assigned by the path variable
      * @param assignee the user to assign to the listing
@@ -109,12 +109,14 @@ public class ListingController {
      */
     @Authorized
     @GetMapping("/{listingId}/assign")
-    public Listing assignListing(Listing listing, @LoggedIn User assignee) {
-        return listingService.assignUserToListing(listing, assignee);
+    public void assignListing(Listing listing, @LoggedIn User assignee) {
+        listingService.assignUserToListing(listing, assignee);
     }
 
     /**
-     * Unassign a user from the listing.
+     * If the current authorized user is the owner of the listing with the given ID,
+     * the assignee will be removed from the listing. If the current authorized user
+     * is assigned to the listing, they will remove themselves from the listing.
      *
      * @param listing the listing to unassign
      * @param user    the user that unassigns the listing (must be owner or assignee)
@@ -122,7 +124,7 @@ public class ListingController {
      */
     @Authorized
     @GetMapping("/{listingId}/unassign")
-    public Listing unassignListing(Listing listing, @LoggedIn User user) {
-        return listingService.unassignUserFromListing(listing, user);
+    public void unassignListing(Listing listing, @LoggedIn User user) {
+        listingService.unassignUserFromListing(listing, user);
     }
 }
