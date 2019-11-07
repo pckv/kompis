@@ -13,7 +13,7 @@ We will provide a platform where users can ask for someone to drive them home, o
 #### Users
 - [Create user](#create-user) : `POST /users`
 - [Authorize](#authorize) : `POST /users/authorize`
-- [Get user](#get-specific-user) : `GET /users/{id:number}`
+- [Get user](#get-user) : `GET /users/{id:number}`
 - [Get current user](#get-current-user) : `GET /users/current`
 - [Delete current user](#delete-current-user) : `DELETE /users/current`
 
@@ -107,7 +107,7 @@ Body:
 - `409 CONFLICT` if a user with the given email exists
 
 ---
-#### Get specific user
+#### Get user
 ```
 GET /users/{id:number}
 ```
