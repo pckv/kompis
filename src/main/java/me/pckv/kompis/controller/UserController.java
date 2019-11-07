@@ -38,29 +38,6 @@ public class UserController {
     }
 
     /**
-     * Find a user by id and return it as a JSON object.
-     *
-     * @param id the id of the user to find and return
-     * @return the user as JSON object
-     */
-    @Authorized
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
-    }
-
-    /**
-     * Delete the logged in user.
-     *
-     * @param user the logged in user that will be deleted
-     */
-    @Authorized
-    @DeleteMapping
-    public void deleteUser(@LoggedIn User user) {
-        userService.deleteUser(user);
-    }
-
-    /**
      * Verify that the user exists and the password is correct,
      * then return a JSON web token in the header and the user as a JSON object.
      *
@@ -78,6 +55,18 @@ public class UserController {
     }
 
     /**
+     * Find a user by id and return it as a JSON object.
+     *
+     * @param id the id of the user to find and return
+     * @return the user as JSON object
+     */
+    @Authorized
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getUser(id);
+    }
+
+    /**
      * Return the current user as a JSON object.
      *
      * @param current currently logged in user
@@ -87,5 +76,16 @@ public class UserController {
     @GetMapping("/current")
     public User currentUser(@LoggedIn User current) {
         return current;
+    }
+
+    /**
+     * Delete the logged in user.
+     *
+     * @param user the logged in user that will be deleted
+     */
+    @Authorized
+    @DeleteMapping("/current")
+    public void deleteUser(@LoggedIn User user) {
+        userService.deleteUser(user);
     }
 }
