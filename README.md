@@ -10,8 +10,8 @@ We will provide a platform where users can ask for someone to drive them home, o
 
 ## API
 #### Users
-- [Create user](#create-user) : `POST /users`
-- [Authorize](#authorize) : `POST /users/authorize`
+- [Create user](#create-user) : `POST /users` → *open endpoint*
+- [Authorize](#authorize) : `POST /users/authorize` → *open endpoint*
 - [Get user](#get-user) : `GET /users/{id:number}`
 - [Get current user](#get-current-user) : `GET /users/current`
 - [Delete current user](#delete-current-user) : `DELETE /users/current`
