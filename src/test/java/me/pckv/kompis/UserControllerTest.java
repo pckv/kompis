@@ -44,7 +44,7 @@ public class UserControllerTest {
     private String loginAndReturnAuthorization() throws Exception {
         String loginJson = "{\"email\": \"email\", \"password\": \"password\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
-                .post("/users/login")
+                .post("/users/authorize")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(loginJson))

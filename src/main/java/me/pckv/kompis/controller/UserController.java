@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     /**
-     * Create a user if no user with the same email exists.
+     * Creates a new user that can be logged into.
      *
      * @param newUser the user to create
      * @return the user that is created
@@ -38,36 +39,12 @@ public class UserController {
     }
 
     /**
-     * Find a user by id and return it as a JSON object.
-     *
-     * @param id the id of the user to find and return
-     * @return the user as JSON object
-     */
-    @Authorized
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
-    }
-
-    /**
-     * Delete the logged in user.
-     *
-     * @param user the logged in user that will be deleted
-     */
-    @Authorized
-    @DeleteMapping
-    public void deleteUser(@LoggedIn User user) {
-        userService.deleteUser(user);
-    }
-
-    /**
-     * Verify that the user exists and the password is correct,
-     * then return a JSON web token in the header and the user as a JSON object.
+     * Receive authorization for use with endpoints requiring authorization.
      *
      * @param loginUser the user to login to
      * @return the user as a JSON object and the JSON web token in the Authorization header
      */
-    @PostMapping("/login")
+    @PostMapping("/authorize")
     public User login(@RequestBody User loginUser, HttpServletResponse response) {
         User user = userService.getUser(loginUser.getEmail());
 
@@ -78,7 +55,19 @@ public class UserController {
     }
 
     /**
-     * Return the current user as a JSON object.
+     * Get the user with the given ID.
+     *
+     * @param id the id of the user to find and return
+     * @return the user as JSON object
+     */
+    @Authorized
+    @GetMapping("/{id}")
+    public Optional<User> getUser(@PathVariable Long id) {
+        return userService.getUser(id);
+    }
+
+    /**
+     * Get the current authorized user.
      *
      * @param current currently logged in user
      * @return the current user as a JSON object
@@ -87,5 +76,17 @@ public class UserController {
     @GetMapping("/current")
     public User currentUser(@LoggedIn User current) {
         return current;
+    }
+
+    /**
+     * Delete the current authorized user.
+     * The client should get rid of the Authorization token manually.
+     *
+     * @param user the logged in user that will be deleted
+     */
+    @Authorized
+    @DeleteMapping("/current")
+    public void deleteUser(@LoggedIn User user) {
+        userService.deleteUser(user);
     }
 }

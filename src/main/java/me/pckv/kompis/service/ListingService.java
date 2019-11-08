@@ -22,6 +22,15 @@ public class ListingService {
     }
 
     /**
+     * Get all listings.
+     *
+     * @return a list of all listings.
+     */
+    public List<Listing> getAllListings() {
+        return repository.findAll();
+    }
+
+    /**
      * Create a new listing and set the logged in user as the owner.
      *
      * @param listing the listing to create
@@ -49,54 +58,13 @@ public class ListingService {
     }
 
     /**
-     * Get all listings.
-     *
-     * @return a list of all listings.
-     */
-    public List<Listing> getAllListings() {
-        return repository.findAll();
-    }
-
-    /**
-     * Activate a listing if the provided user if the owner of the listing.
-     *
-     * @param listing the listing to activate
-     * @param user the user to compare with owner
-     * @return the updated listing
-     */
-    public Listing activateListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        listing.setActive(true);
-        return repository.save(listing);
-    }
-
-    /**
-     * Deactivate a listing if the provided user if the owner of the listing.
-     *
-     * @param listing the listing to deactivate
-     * @param user the user to compare with owner
-     * @return the updated listing
-     */
-    public Listing deactivateListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        listing.setActive(false);
-        return repository.save(listing);
-    }
-
-    /**
      * Delete listing if the provided user is the owner of the listing.
      *
      * @param listing the listing to delete
      * @param user    the user to compare with owner
      */
     public void deleteListing(Listing listing, User user) {
-        if (!listing.getOwner().getEmail().equals(user.getEmail())) {
+        if (!listing.isOwner(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
@@ -104,14 +72,63 @@ public class ListingService {
     }
 
     /**
+     * Activate a listing if the provided user if the owner of the listing.
+     *
+     * @param listing the listing to activate
+     * @param user the user to compare with owner
+     */
+    public void activateListing(Listing listing, User user) {
+        if (!listing.isOwner(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        listing.setActive(true);
+        repository.save(listing);
+    }
+
+    /**
+     * Deactivate a listing if the provided user if the owner of the listing.
+     *
+     * @param listing the listing to deactivate
+     * @param user the user to compare with owner
+     */
+    public void deactivateListing(Listing listing, User user) {
+        if (!listing.isOwner(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        listing.setActive(false);
+        repository.save(listing);
+    }
+
+    /**
      * Assign a user to the listing and update it.
      *
      * @param listing  the listing to assign the user to
      * @param assignee the user to assign to the listing
-     * @return the updated listing
      */
-    public Listing assignUserToListing(Listing listing, User assignee) {
+    public void assignUserToListing(Listing listing, User assignee) {
+        if (listing.hasAssignee()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
         listing.setAssignee(assignee);
-        return repository.save(listing);
+        repository.save(listing);
+    }
+
+    /**
+     * If the current authorized user is the owner of the listing with the given ID,
+     * the assignee will be removed from the listing. If the current authorized user
+     * is assigned to the listing, they will remove themselves from the listing.
+     *
+     * @param listing the listing to unassign
+     * @param user    the user that unassigns the listing (must be owner or assignee)
+     */
+    public void unassignUserFromListing(Listing listing, User user) {
+        if (!listing.isOwner(user) && !listing.isAssignee(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        listing.setAssignee(null);
+        repository.save(listing);
     }
 }
