@@ -1,6 +1,8 @@
 package me.pckv.kompis.security;
 
 import me.pckv.kompis.annotation.Authorized;
+import me.pckv.kompis.data.User;
+import me.pckv.kompis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -18,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
     private JwtManager jwtManager;
+    private UserService userService;
 
     @Autowired
-    public AuthorizationInterceptor(JwtManager jwtManager) {
+    public AuthorizationInterceptor(JwtManager jwtManager, UserService userService) {
         this.jwtManager = jwtManager;
+        this.userService = userService;
     }
 
     @Override
@@ -43,6 +47,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // Verify the token and parse the email
         String email = jwtManager.getSubject(token);
         if (email == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        // Make sure the user exists
+        if (!userService.userExists(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 

@@ -70,6 +70,16 @@ public class UserService {
     }
 
     /**
+     * Returns true if a user with the given email exists.
+     *
+     * @param email the email of the user
+     * @return true if the user exists
+     */
+    public boolean userExists(String email) {
+        return repository.existsByEmail(email);
+    }
+
+    /**
      * Delete a user from the repository.
      *
      * @param user the user to delete
