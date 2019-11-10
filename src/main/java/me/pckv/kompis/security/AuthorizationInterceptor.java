@@ -37,7 +37,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // Attempt to find a JSON web token in the request headers
         String token = parseToken(request);
         if (token == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No token found in header");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header must include a valid token");
         }
 
         // Verify the token and parse the email

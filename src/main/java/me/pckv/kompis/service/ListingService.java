@@ -65,7 +65,7 @@ public class ListingService {
      */
     public void deleteListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to delete listing was not owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to delete listing must be owner of listing");
         }
 
         repository.delete(listing);
@@ -79,7 +79,7 @@ public class ListingService {
      */
     public void activateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to activate listing was not owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to activate listing must be owner of listing");
         }
 
         listing.setActive(true);
@@ -94,7 +94,7 @@ public class ListingService {
      */
     public void deactivateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to deactivate listing was not owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to deactivate listing must be owner of listing");
         }
 
         listing.setActive(false);
