@@ -9,27 +9,27 @@ The Kompis project aims to make it easy to for everyone to get home after a nigh
 We will provide a platform where users can ask for someone to drive them home, or drivers to advertise when they are available.
 
 ## API
-#### Users
-- [Create user](#create-user) : `POST /users` → *open endpoint*
-- [Authorize](#authorize) : `POST /users/authorize` → *open endpoint*
-- [Get user](#get-user) : `GET /users/{id:number}`
-- [Get current user](#get-current-user) : `GET /users/current`
-- [Delete current user](#delete-current-user) : `DELETE /users/current`
+### Users endpoints
+-   [Create user](#create-user) : `POST /users` → *open endpoint*
+-   [Authorize](#authorize) : `POST /users/authorize` → *open endpoint*
+-   [Get user](#get-user) : `GET /users/{id:number}`
+-   [Get current user](#get-current-user) : `GET /users/current`
+-   [Delete current user](#delete-current-user) : `DELETE /users/current`
 
-#### Listings
-- [Get listings](#get-listings) : `GET /listings`
-- [Create listing](#create-listing) : `POST /listings`
-- [Get listing](#get-listing) : `GET /listings/{id:number}`
-- [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
-- [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
-- [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
-- [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
-- [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
+### Listings endpoints
+-   [Get listings](#get-listings) : `GET /listings`
+-   [Create listing](#create-listing) : `POST /listings`
+-   [Get listing](#get-listing) : `GET /listings/{id:number}`
+-   [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
+-   [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
+-   [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
+-   [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
+-   [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
 
 ## Documentation
 ### Users
 #### Create user
-```
+```http
 POST /users
 ```
 
@@ -38,7 +38,7 @@ Creates a new user that can be logged into.
 **Request**
 
 Headers: 
-```
+```http
 Content-Type: application/json
 ```
  
@@ -53,10 +53,10 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 ```
 
@@ -68,11 +68,11 @@ Body:
 }
 ```
 
-- `409 CONFLICT` if a user with the given email exists
+-   `409 CONFLICT` if a user with the given email exists
 
 ---
 #### Authorize
-```
+```http
 POST /users/authorize
 ```
 
@@ -81,7 +81,7 @@ Receive authorization for use with endpoints requiring authorization.
 **Request**
 
 Headers:
-```
+```http
 Content-Type: application/json
 ```
  
@@ -95,10 +95,10 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -111,12 +111,12 @@ Body:
 }
 ```
 
-- `404 CONFLICT` if a user with the given email does not exist
-- `403 FORBIDDEN` if a user with the given email already exist
+-   `404 CONFLICT` if a user with the given email does not exist
+-   `403 FORBIDDEN` if a user with the given email already exist
 
 ---
 #### Get user
-```
+```http
 GET /users/{id:number}
 ```
 
@@ -125,16 +125,16 @@ Get the user with the given ID.
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -147,12 +147,12 @@ Body:
 }
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if user with the given id was not found
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if user with the given id was not found
 
 ---
 #### Get current user
-```
+```http
 GET /users/current
 ```
 
@@ -161,16 +161,16 @@ Get the current authorized user.
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -182,11 +182,11 @@ Body:
 }
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
 #### Delete current user
-```
+```http
 DELETE /users/current
 ```
 
@@ -195,24 +195,24 @@ Delete the current authorized user. The client should get rid of the `Authorizat
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
-### Listings
+### Listing
 #### Get listings
-```
+```http
 GET /listings
 ```
 
@@ -221,16 +221,16 @@ Gets a list of all listings.
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -251,11 +251,11 @@ Body:
   }, ...
 ]
 ```
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
 #### Create listing
-```
+```http
 POST /listings
 ```
 
@@ -264,7 +264,7 @@ Creates a new listing owned by the current logged in user.
 **Request**
 
 Headers: 
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -279,10 +279,10 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -301,10 +301,10 @@ Body:
   "assignee": null
 }
 ```
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 ---
 #### Get listing
-```
+```http
 GET /listings/{id:number}
 ```
 
@@ -313,16 +313,16 @@ Gets the listing with the given ID.
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -342,12 +342,12 @@ Body:
 }
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Delete listing
-```
+```http
 DELETE /listings/{id:number}
 ```
 
@@ -356,26 +356,26 @@ Delete the listing with the given ID if it is owned by the current authorized us
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if the listing is not owned by the current authorized user
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if the listing is not owned by the current authorized user
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Activate listing
-```
+```http
 GET /listings/{id:number}/activate
 ```
 
@@ -384,26 +384,26 @@ Activate the listing with the given ID if it is owned by the current authorized 
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if the listing is not owned by the current authorized user
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if the listing is not owned by the current authorized user
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Deactivate listing
-```
+```http
 GET /listings/{id:number}/deactivate
 ```
 
@@ -412,26 +412,26 @@ Deactivate the listing with the given ID if it is owned by the current authorize
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if the listing is not owned by the current authorized user
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if the listing is not owned by the current authorized user
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Assign current user to listing
-```
+```http
 GET /listings/{id:number}/assign
 ```
 
@@ -440,26 +440,26 @@ Assign the current logged in user to the listing with the given ID
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
-- `409 CONFLICT` if the listing already has an assignee
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
+-   `409 CONFLICT` if the listing already has an assignee
 
 ---
 #### Unassign user from listing
-```
+```http
 GET /listings/{id:number}/unassign
 ```
 
@@ -467,24 +467,24 @@ If the current authorized user is the owner of the listing with the given ID, th
 be removed from the listing. If the current authorized user is assigned to the listing, they
 will remove themselves from the listing.
 
-**Request**
+ **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-**Responses**
+ **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if you either don't own the listing, or are not assigned to the listing
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if you either don't own the listing, or are not assigned to the listing
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
