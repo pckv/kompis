@@ -38,7 +38,7 @@ Creates a new user that can be logged into.
 **Request**
 
 Headers: 
-```
+```http
 Content-Type: application/json
 ```
  
@@ -56,7 +56,7 @@ Body:
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 ```
 
@@ -81,7 +81,7 @@ Receive authorization for use with endpoints requiring authorization.
 **Request**
 
 Headers:
-```
+```http
 Content-Type: application/json
 ```
  
@@ -98,7 +98,7 @@ Body:
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -125,7 +125,7 @@ Get the user with the given ID.
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -134,7 +134,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -161,7 +161,7 @@ Get the current authorized user.
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -170,7 +170,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -195,7 +195,7 @@ Delete the current authorized user. The client should get rid of the `Authorizat
 **Request**
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -204,7 +204,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -221,7 +221,7 @@ Gets a list of all listings.
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -230,7 +230,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -264,7 +264,7 @@ Creates a new listing owned by the current logged in user.
 **Request**
 
 Headers: 
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -282,7 +282,7 @@ Body:
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -313,7 +313,7 @@ Gets the listing with the given ID.
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -322,7 +322,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Content-Type: application/json
 Authorization: Bearer xxx.yyy.zzz
 ```
@@ -356,7 +356,7 @@ Delete the listing with the given ID if it is owned by the current authorized us
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -365,7 +365,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -384,7 +384,7 @@ Activate the listing with the given ID if it is owned by the current authorized 
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -393,7 +393,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -412,7 +412,7 @@ Deactivate the listing with the given ID if it is owned by the current authorize
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -421,7 +421,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -440,7 +440,7 @@ Assign the current logged in user to the listing with the given ID
 **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -449,7 +449,7 @@ Authorization: Bearer xxx.yyy.zzz
 -   `200 OK` on success
 
 Headers:
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
@@ -470,7 +470,7 @@ will remove themselves from the listing.
  **Request**
 
 Headers: 
-```
+```http
 Authorization: Bearer xxx.yyy.zzz
 ```
 
