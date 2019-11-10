@@ -112,7 +112,7 @@ Body:
 ```
 
 - `404 CONFLICT` if a user with the given email does not exist
-- `403`          if a user with the given email already exist
+- `403 FORBIDDEN` if a user with the given email already exist
 
 ---
 #### Get user
