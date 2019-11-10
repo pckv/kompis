@@ -29,7 +29,7 @@ We will provide a platform where users can ask for someone to drive them home, o
 ## Documentation
 ### Users
 #### Create user
-```
+```http
 POST /users
 ```
 
@@ -72,7 +72,7 @@ Body:
 
 ---
 #### Authorize
-```
+```http
 POST /users/authorize
 ```
 
@@ -116,7 +116,7 @@ Body:
 
 ---
 #### Get user
-```
+```http
 GET /users/{id:number}
 ```
 
@@ -152,7 +152,7 @@ Body:
 
 ---
 #### Get current user
-```
+```http
 GET /users/current
 ```
 
@@ -186,7 +186,7 @@ Body:
 
 ---
 #### Delete current user
-```
+```http
 DELETE /users/current
 ```
 
@@ -212,7 +212,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 ### Listing
 #### Get listings
-```
+```http
 GET /listings
 ```
 
@@ -304,7 +304,7 @@ Body:
 -   `403 FORBIDDEN` if `Authorization` header is invalid
 ---
 #### Get listing
-```
+```http
 GET /listings/{id:number}
 ```
 
@@ -347,7 +347,7 @@ Body:
 
 ---
 #### Delete listing
-```
+```http
 DELETE /listings/{id:number}
 ```
 
@@ -375,7 +375,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 ---
 #### Activate listing
-```
+```http
 GET /listings/{id:number}/activate
 ```
 
@@ -403,7 +403,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 ---
 #### Deactivate listing
-```
+```http
 GET /listings/{id:number}/deactivate
 ```
 
@@ -431,7 +431,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 ---
 #### Assign current user to listing
-```
+```http
 GET /listings/{id:number}/assign
 ```
 
@@ -459,7 +459,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 ---
 #### Unassign user from listing
-```
+```http
 GET /listings/{id:number}/unassign
 ```
 
