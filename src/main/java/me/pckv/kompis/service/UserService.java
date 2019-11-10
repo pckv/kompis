@@ -32,7 +32,7 @@ public class UserService {
     public User createUser(User user) {
         User existingUser = repository.findByEmail(user.getEmail());
         if (existingUser != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with given email already exists");
         }
 
         user.setPassword(PasswordUtil.encrypt(user.getPassword()));
@@ -48,7 +48,7 @@ public class UserService {
     public Optional<User> getUser(Long id) {
         Optional<User> user = repository.findById(id);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given id was not found");
         }
 
         return user;
@@ -63,7 +63,7 @@ public class UserService {
     public User getUser(String email) {
         User user = repository.findByEmail(email);
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given email was not found");
         }
 
         return user;
@@ -98,7 +98,7 @@ public class UserService {
     public String login(User user, String password) {
         // Verify the given password
         if (!PasswordUtil.verify(password, user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Provided password was incorrect");
         }
 
         // Generate the JSON web token for the user and send it back
