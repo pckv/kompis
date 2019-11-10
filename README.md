@@ -10,21 +10,21 @@ We will provide a platform where users can ask for someone to drive them home, o
 
 ## API
 #### Users
-- [Create user](#create-user) : `POST /users` → *open endpoint*
-- [Authorize](#authorize) : `POST /users/authorize` → *open endpoint*
-- [Get user](#get-user) : `GET /users/{id:number}`
-- [Get current user](#get-current-user) : `GET /users/current`
-- [Delete current user](#delete-current-user) : `DELETE /users/current`
+  -   [Create user](#create-user) : `POST /users` → *open endpoint*
+  -   [Authorize](#authorize) : `POST /users/authorize` → *open endpoint*
+  -   [Get user](#get-user) : `GET /users/{id:number}`
+  -   [Get current user](#get-current-user) : `GET /users/current`
+  -   [Delete current user](#delete-current-user) : `DELETE /users/current`
 
 #### Listings
-- [Get listings](#get-listings) : `GET /listings`
-- [Create listing](#create-listing) : `POST /listings`
-- [Get listing](#get-listing) : `GET /listings/{id:number}`
-- [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
-- [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
-- [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
-- [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
-- [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
+  -   [Get listings](#get-listings) : `GET /listings`
+  -   [Create listing](#create-listing) : `POST /listings`
+  -   [Get listing](#get-listing) : `GET /listings/{id:number}`
+  -   [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
+  -   [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
+  -   [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
+  -   [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
+  -   [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
 
 ## Documentation
 ### Users
