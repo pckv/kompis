@@ -27,7 +27,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+            Object handler) {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
 
         // Check if the mapping requires authorization
@@ -39,13 +40,13 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // Attempt to find a JSON web token in the request headers
         String token = parseToken(request);
         if (token == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authorization header must include a valid token");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Authorization header must include a valid token");
         }
 
         // Verify the token and parse the email
         String email = jwtManager.getSubject(token);
-        if (email == null || !userService.userExists(email))
-        {
+        if (email == null || !userService.userExists(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Provided token invalid");
         }
 
