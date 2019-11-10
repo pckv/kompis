@@ -111,7 +111,8 @@ Body:
 }
 ```
 
-- `409 CONFLICT` if a user with the given email exists
+- `404 CONFLICT` if a user with the given email does not exist
+- `403`          if a user with the given email already exist
 
 ---
 #### Get user
@@ -146,8 +147,8 @@ Body:
 }
 ```
 
-- `404 NOT FOUND` if user with the given id was not found
 - `403 FORBIDDEN` if `Authorization` header is invalid
+- `404 NOT FOUND` if user with the given id was not found
 
 ---
 #### Get current user
@@ -250,6 +251,7 @@ Body:
   }, ...
 ]
 ```
+- `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
 #### Create listing
@@ -299,7 +301,7 @@ Body:
   "assignee": null
 }
 ```
-
+- `403 FORBIDDEN` if `Authorization` header is invalid
 ---
 #### Get listing
 ```
@@ -340,6 +342,7 @@ Body:
 }
 ```
 
+- `403 FORBIDDEN` if `Authorization` header is invalid
 - `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
@@ -366,8 +369,9 @@ Headers:
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `404 NOT FOUND` if a listing with the given ID was not found
 - `403 FORBIDDEN` if the listing is not owned by the current authorized user
+- `403 FORBIDDEN` if `Authorization` header is invalid
+- `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Activate listing
@@ -393,8 +397,9 @@ Headers:
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `404 NOT FOUND` if a listing with the given ID was not found
 - `403 FORBIDDEN` if the listing is not owned by the current authorized user
+- `403 FORBIDDEN` if `Authorization` header is invalid
+- `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Deactivate listing
@@ -420,8 +425,9 @@ Headers:
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `404 NOT FOUND` if a listing with the given ID was not found
 - `403 FORBIDDEN` if the listing is not owned by the current authorized user
+- `403 FORBIDDEN` if `Authorization` header is invalid
+- `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Assign current user to listing
@@ -447,6 +453,7 @@ Headers:
 Authorization: Bearer xxx.yyy.zzz
 ```
 
+- `403 FORBIDDEN` if `Authorization` header is invalid
 - `404 NOT FOUND` if a listing with the given ID was not found
 - `409 CONFLICT` if the listing already has an assignee
 
@@ -476,7 +483,8 @@ Headers:
 Authorization: Bearer xxx.yyy.zzz
 ```
 
+- `403 FORBIDDEN` if you either don't own the listing, or are not assigned to the listing
+- `403 FORBIDDEN` if `Authorization` header is invalid
 - `404 NOT FOUND` if a listing with the given ID was not found
-- `409 FORBIDDEN` if you either don't own the listing, or are not assigned to the listing
 
 ---
