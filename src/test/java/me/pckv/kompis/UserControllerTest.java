@@ -1,5 +1,7 @@
 package me.pckv.kompis;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +15,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,7 +26,7 @@ public class UserControllerTest {
     @Before
     public void setUp() throws Exception {
         if (!dataLoaded) {
-            String newUserJson = "{\"email\": \"email\", \"password\": \"password\", \"displayName\": \"displayName\"}";
+            String newUserJson = "{\"email\": \"email@email.com\", \"password\": \"password\", \"displayName\": \"displayName\"}";
 
             mvc.perform(MockMvcRequestBuilders
                     .post("/users")
@@ -42,7 +42,7 @@ public class UserControllerTest {
     }
 
     private String loginAndReturnAuthorization() throws Exception {
-        String loginJson = "{\"email\": \"email\", \"password\": \"password\"}";
+        String loginJson = "{\"email\": \"email@email.com\", \"password\": \"password\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post("/users/authorize")
                 .accept(MediaType.APPLICATION_JSON)
