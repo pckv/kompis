@@ -37,13 +37,13 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         // Attempt to find a JSON web token in the request headers
         String token = parseToken(request);
         if (token == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No token found in header");
         }
 
         // Verify the token and parse the email
         String email = jwtManager.getSubject(token);
         if (email == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Provided token invalid");
         }
 
         // Add the token back to the response and add the email as the logged in user
