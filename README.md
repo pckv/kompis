@@ -255,7 +255,7 @@ Body:
 
 ---
 #### Create listing
-```
+```http
 POST /listings
 ```
 
