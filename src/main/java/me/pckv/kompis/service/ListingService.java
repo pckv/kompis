@@ -51,7 +51,7 @@ public class ListingService {
     public Listing getListing(Long id) {
         Optional<Listing> listing = repository.findById(id);
         if (listing.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Listing with given id not found");
         }
 
         return listing.get();
@@ -65,7 +65,7 @@ public class ListingService {
      */
     public void deleteListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to delete listing was not owner of listing");
         }
 
         repository.delete(listing);
@@ -79,7 +79,7 @@ public class ListingService {
      */
     public void activateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to activate listing was not owner of listing");
         }
 
         listing.setActive(true);
@@ -94,7 +94,7 @@ public class ListingService {
      */
     public void deactivateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to deactivate listing was not owner of listing");
         }
 
         listing.setActive(false);
@@ -109,7 +109,7 @@ public class ListingService {
      */
     public void assignUserToListing(Listing listing, User assignee) {
         if (listing.hasAssignee()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Listing already has an assignee");
         }
         listing.setAssignee(assignee);
         repository.save(listing);
@@ -125,7 +125,7 @@ public class ListingService {
      */
     public void unassignUserFromListing(Listing listing, User user) {
         if (!listing.isOwner(user) && !listing.isAssignee(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to unassign listing must be owner or assigned");
         }
 
         listing.setAssignee(null);
