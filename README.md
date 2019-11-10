@@ -53,7 +53,7 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -95,7 +95,7 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -131,7 +131,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -167,7 +167,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -182,7 +182,7 @@ Body:
 }
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
 #### Delete current user
@@ -201,14 +201,14 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
 ### Listing
 #### Get listings
@@ -227,7 +227,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -251,7 +251,7 @@ Body:
   }, ...
 ]
 ```
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 
 ---
 #### Create listing
@@ -279,7 +279,7 @@ Body:
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -301,7 +301,7 @@ Body:
   "assignee": null
 }
 ```
-- `403 FORBIDDEN` if `Authorization` header is invalid
+-   `403 FORBIDDEN` if `Authorization` header is invalid
 ---
 #### Get listing
 ```
@@ -319,7 +319,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -342,8 +342,8 @@ Body:
 }
 ```
 
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Delete listing
@@ -362,16 +362,16 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if the listing is not owned by the current authorized user
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if the listing is not owned by the current authorized user
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Activate listing
@@ -390,16 +390,16 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-- `403 FORBIDDEN` if the listing is not owned by the current authorized user
-- `403 FORBIDDEN` if `Authorization` header is invalid
-- `404 NOT FOUND` if a listing with the given ID was not found
+-   `403 FORBIDDEN` if the listing is not owned by the current authorized user
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+-   `404 NOT FOUND` if a listing with the given ID was not found
 
 ---
 #### Deactivate listing
@@ -418,7 +418,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -446,7 +446,7 @@ Authorization: Bearer xxx.yyy.zzz
 
 **Responses**
 
-- `200 OK` on success
+-   `200 OK` on success
 
 Headers:
 ```
@@ -467,14 +467,14 @@ If the current authorized user is the owner of the listing with the given ID, th
 be removed from the listing. If the current authorized user is assigned to the listing, they
 will remove themselves from the listing.
 
-### Request
+ **Request**
 
 Headers: 
 ```
 Authorization: Bearer xxx.yyy.zzz
 ```
 
-### Responses
+ **Responses**
 
 -   `200 OK` on success
 
