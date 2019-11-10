@@ -44,13 +44,9 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
         // Verify the token and parse the email
         String email = jwtManager.getSubject(token);
-        if (email == null) {
+        if (email == null || !userService.userExists(email))
+        {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Provided token invalid");
-        }
-
-        // Make sure the user exists
-        if (!userService.userExists(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         // Add the token back to the response and add the email as the logged in user
