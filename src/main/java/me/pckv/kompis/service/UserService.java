@@ -90,11 +90,11 @@ public class UserService {
      * @param user the user to delete
      */
     public void deleteUser(User user) {
-        List<Listing> ownerListings = listingRepository.findByOwner_Id(user.getId());
+        List<Listing> ownerListings = listingRepository.findByOwner(user);
         for (Listing listing : ownerListings) {
             listingRepository.delete(listing);
         }
-        List<Listing> assigneeListings = listingRepository.findByAssignee_Id(user.getId());
+        List<Listing> assigneeListings = listingRepository.findByAssignee(user);
         for (Listing listing : assigneeListings) {
             listing.setAssignee(null);
             listingRepository.save(listing);
