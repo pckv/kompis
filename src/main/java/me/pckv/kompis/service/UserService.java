@@ -1,6 +1,8 @@
 package me.pckv.kompis.service;
 
+import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
+import me.pckv.kompis.repository.ListingRepository;
 import me.pckv.kompis.repository.UserRepository;
 import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,11 +19,13 @@ public class UserService {
 
     private UserRepository repository;
     private JwtManager jwtManager;
+    private ListingRepository listingRepository;
 
     @Autowired
-    public UserService(UserRepository repository, JwtManager jwtManager) {
+    public UserService(UserRepository repository, JwtManager jwtManager, ListingRepository listingRepository) {
         this.repository = repository;
         this.jwtManager = jwtManager;
+        this.listingRepository = listingRepository;
     }
 
     /**
@@ -85,6 +90,15 @@ public class UserService {
      * @param user the user to delete
      */
     public void deleteUser(User user) {
+        List<Listing> ownerListings = listingRepository.findByOwner_Id(user.getId());
+        for (Listing listing : ownerListings) {
+            listingRepository.delete(listing);
+        }
+        List<Listing> assigneeListings = listingRepository.findByAssignee_Id(user.getId());
+        for (Listing listing : assigneeListings) {
+            listing.setAssignee(null);
+            listingRepository.save(listing);
+        }
         repository.delete(user);
     }
 
