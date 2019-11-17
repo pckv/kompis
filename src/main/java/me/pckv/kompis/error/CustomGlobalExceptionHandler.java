@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -31,7 +32,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         body.put("timestamp", new Date());
         body.put("status", status.value());
-        body.put("errors", errors);
+        body.put("error", status.getReasonPhrase());
+        body.put("message", String.join(", ", errors));
+        body.put("path", String.format("/%s", ((ServletWebRequest) request).getRequest().getRequestURL().toString().split("/", 4)[3]));
 
         return new ResponseEntity<>(body, headers, status);
     }
