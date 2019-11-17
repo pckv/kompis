@@ -190,7 +190,11 @@ Body:
 DELETE /users/current
 ```
 
-Delete the current authorized user. The client should get rid of the `Authorization` token manually.
+Delete the current authorized user. All listings where this user is 
+the assignee will be unassigned and all listings where this user is 
+the owner will be deleted.
+
+The client should get rid of the `Authorization` token manually.
 
 **Request**
 
