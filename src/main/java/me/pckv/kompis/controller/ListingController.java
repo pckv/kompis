@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class ListingController {
      */
     @Authorized
     @PostMapping
-    public Listing createListing(@RequestBody Listing listing, @LoggedIn User owner) {
+    public Listing createListing(@Valid @RequestBody Listing listing, @LoggedIn User owner) {
         return listingService.createListing(listing, owner);
     }
 

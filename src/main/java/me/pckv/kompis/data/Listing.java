@@ -1,12 +1,13 @@
 package me.pckv.kompis.data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Listing {
 
     @Id @GeneratedValue private long id;
-    @NotEmpty private String title;
+    @NotEmpty(message = "tile must not be empty") private String title;
     private boolean active = true;
     private boolean driver = false;
     // @NonNull @OneToOne private Location location;
