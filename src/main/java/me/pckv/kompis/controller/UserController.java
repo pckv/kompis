@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +35,7 @@ public class UserController {
      * @return the user that is created
      */
     @PostMapping
-    public User createUser(@RequestBody User newUser) {
+    public User createUser(@Valid @RequestBody User newUser) {
         return userService.createUser(newUser);
     }
 
