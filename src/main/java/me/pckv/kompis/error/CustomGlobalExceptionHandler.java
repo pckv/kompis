@@ -31,7 +31,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         body.put("timestamp", new Date());
         body.put("status", status.value());
-        body.put("errors", errors);
+        body.put("error", status.getReasonPhrase());
+        body.put("message", String.join(", ", errors));
 
         return new ResponseEntity<>(body, headers, status);
     }
