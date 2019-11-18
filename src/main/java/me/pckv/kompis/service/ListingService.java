@@ -39,6 +39,7 @@ public class ListingService {
      */
     public Listing createListing(Listing listing, User owner) {
         listing.setOwner(owner);
+        System.out.println(listing.toString());
         return repository.save(listing);
     }
 

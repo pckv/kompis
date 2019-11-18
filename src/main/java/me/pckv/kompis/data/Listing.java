@@ -3,10 +3,12 @@ package me.pckv.kompis.data;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
 @Data
@@ -18,7 +20,7 @@ public class Listing {
     @NotEmpty(message = "tile must not be empty") private String title;
     private boolean active = true;
     private boolean driver = false;
-    // @NonNull @OneToOne private Location location;
+    @OneToOne(cascade = {CascadeType.ALL}) private Location location;
     @ManyToOne private User owner;
     @ManyToOne private User assignee;
 
