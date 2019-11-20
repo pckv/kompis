@@ -24,7 +24,7 @@ We will provide a platform where users can ask for someone to drive them home, o
 -   [Delete listing](#delete-listing) : `DELETE /listings/{id:number}`
 -   [Activate listing](#activate-listing) : `GET /listings/{id:number}/activate`
 -   [Deactivate listing](#deactivate-listing) : `GET /listings/{id:number}/deactivate`
--   [Assign current user to listing](#assign-current-user-to-listing) : `GET /listings/{id:number}/assign`
+-   [Assign current user to listing](#assign-current-user-to-listing) : `POST /listings/{id:number}/assign`
 -   [Unassign user from listing](#unassign-user-from-listing) : `GET /listings/{id:number}/unassign`
 
 ## Documentation
@@ -293,7 +293,25 @@ Body:
       "id": 1,
       "displayName": "Roger Doger"
     }, 
-    "assignee": null
+    "location": {
+      "id": 10,
+      "latitude": "98.76",
+      "longitude": "54.32",
+      "accuracy": "99.1"
+      },
+    "assignee": {
+      "id": 12,
+      "user": {
+        "id": 9,
+        "displayName": "Harry"
+      },
+      "location": {
+        "id": 10,
+        "latitude": "12.34",
+        "longitude": "23.45",
+        "accuracy": "99.1"
+      }
+    }
   }, ...
 ]
 ```
@@ -319,7 +337,12 @@ Body:
 ```json
 {
   "title": "Need pickup at Oslo",
-  "driver": false
+  "driver": false, 
+  "location": {
+    "latitude": "98.76",
+    "longitude": "54.32",
+    "accuracy": "99.1"
+  }
 }
 ```
 
@@ -344,6 +367,12 @@ Body:
     "id": 1,
     "displayName": "Roger Doger"
   }, 
+  "location": {
+    "id": 10,
+    "latitude": "98.76",
+    "longitude": "54.32",
+    "accuracy": "99.1"
+  },
   "assignee": null
 }
 ```
@@ -384,6 +413,12 @@ Body:
     "id": 1,
     "displayName": "Roger Doger"
   }, 
+  "location": {
+    "id": 10,
+    "latitude": "98.76",
+    "longitude": "54.32",
+    "accuracy": "99.1"
+  },
   "assignee": null
 }
 ```
@@ -478,16 +513,26 @@ Authorization: Bearer xxx.yyy.zzz
 ---
 #### Assign current user to listing
 ```http
-GET /listings/{id:number}/assign
+POST /listings/{id:number}/assign
 ```
 
-Assign the current logged in user to the listing with the given ID
+Assign the current logged in user to the listing with the given ID and 
+store the assignees location in the listing.
 
 **Request**
 
 Headers: 
 ```http
 Authorization: Bearer xxx.yyy.zzz
+```
+
+Body:
+```json
+{
+  "latitude": "12.34",
+  "longitude": "23.45",
+  "accuracy": "99.1"
+}
 ```
 
 **Responses**
