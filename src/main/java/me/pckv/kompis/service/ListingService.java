@@ -37,7 +37,7 @@ public class ListingService {
      * Create a new listing and set the logged in user as the owner.
      *
      * @param listing the listing to create
-     * @param owner   the user that will be the owner of the listing
+     * @param owner the user that will be the owner of the listing
      * @return the created listing
      */
     public Listing createListing(Listing listing, User owner) {
@@ -55,7 +55,8 @@ public class ListingService {
     public Listing getListing(Long id) {
         Optional<Listing> listing = repository.findById(id);
         if (listing.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Listing with given id not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Listing with given id not found");
         }
 
         return listing.get();
@@ -65,11 +66,12 @@ public class ListingService {
      * Delete listing if the provided user is the owner of the listing.
      *
      * @param listing the listing to delete
-     * @param user    the user to compare with owner
+     * @param user the user to compare with owner
      */
     public void deleteListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to delete listing must be owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "User trying to delete listing must be owner of listing");
         }
 
         repository.delete(listing);
@@ -83,7 +85,8 @@ public class ListingService {
      */
     public void activateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to activate listing must be owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "User trying to activate listing must be owner of listing");
         }
 
         listing.setActive(true);
@@ -98,7 +101,8 @@ public class ListingService {
      */
     public void deactivateListing(Listing listing, User user) {
         if (!listing.isOwner(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to deactivate listing must be owner of listing");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "User trying to deactivate listing must be owner of listing");
         }
 
         listing.setActive(false);
@@ -108,30 +112,28 @@ public class ListingService {
     /**
      * Assign a assignee to the listing and update it.
      *
-     * @param listing  the listing to assign the user to
+     * @param listing the listing to assign the user to
      * @param assignee the assignee to assign to the listing
      */
     public void assignAssigneeToListing(Listing listing, Assignee assignee) {
         if (listing.hasAssignee()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Listing already has an assignee");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Listing already has an assignee");
         }
-
-        System.out.println("Assigning " + assignee + " to " + listing);
 
         // Send notification to owner about the new assignee
         if (listing.getOwner().hasFirebaseToken()) {
+            String assigneeName = assignee.getUser().getDisplayName();
             Message message = Message.builder()
                     .setNotification(Notification.builder()
-                            .setTitle(assignee.getDisplayName())
+                            .setTitle(assigneeName)
                             .setBody("Assigned themselves to your listing " + listing.getTitle())
                             .build())
-                    .putData("asString",
-                            assignee.getDisplayName() + " assigned themselves to your listing "
-                                    + listing.getTitle())
+                    .putData("asString", assigneeName + " assigned themselves to your listing "
+                            + listing.getTitle())
                     .setToken(listing.getOwner().getFirebaseToken())
                     .build();
 
-            System.out.println("Sending notification: " + message.toString());
             FirebaseMessaging.getInstance().sendAsync(message);
         }
 
@@ -140,16 +142,17 @@ public class ListingService {
     }
 
     /**
-     * If the current authorized user is the owner of the listing with the given ID,
-     * the assignee will be removed from the listing. If the current authorized user
-     * is assigned to the listing, they will remove themselves from the listing.
+     * If the current authorized user is the owner of the listing with the given ID, the assignee
+     * will be removed from the listing. If the current authorized user is assigned to the listing,
+     * they will remove themselves from the listing.
      *
      * @param listing the listing to unassign
-     * @param user    the user that unassigns the listing (must be owner or assignee)
+     * @param user the user that unassigns the listing (must be owner or assignee)
      */
     public void unassignAssigneeFromListing(Listing listing, User user) {
         if (!listing.isOwner(user) && !listing.isAssignee(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to unassign listing must be owner or assigned");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "User trying to unassign listing must be owner or assigned");
         }
 
         listing.setAssignee(null);
