@@ -2,7 +2,9 @@ package me.pckv.kompis.controller;
 
 import me.pckv.kompis.annotation.Authorized;
 import me.pckv.kompis.annotation.LoggedIn;
+import me.pckv.kompis.data.Assignee;
 import me.pckv.kompis.data.Listing;
+import me.pckv.kompis.data.Location;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.service.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,9 +108,11 @@ public class ListingController {
      * @param assignee the user to assign to the listing
      */
     @Authorized
-    @GetMapping("/{listingId}/assign")
-    public void assignListing(Listing listing, @LoggedIn User assignee) {
-        listingService.assignUserToListing(listing, assignee);
+    @PostMapping("/{listingId}/assign")
+    public void assignListing(Listing listing, @RequestBody Location location, @LoggedIn User assignee) {
+
+        System.out.println(location.toString());
+        listingService.assignAssigneeToListing(listing, new Assignee(assignee, location));
     }
 
     /**
@@ -122,6 +126,6 @@ public class ListingController {
     @Authorized
     @GetMapping("/{listingId}/unassign")
     public void unassignListing(Listing listing, @LoggedIn User user) {
-        listingService.unassignUserFromListing(listing, user);
+        listingService.unassignAssigneeFromListing(listing, user);
     }
 }
