@@ -22,6 +22,10 @@ public class FcmInitializer {
 
     @PostConstruct
     public void initialize() {
+        if (firebaseConfigPath.isEmpty() || firebaseDatabaseUrl.isEmpty()) {
+            return;
+        }
+
         log.info("Loading firebase configuration from: " + firebaseConfigPath);
         try {
             FileInputStream firebaseConfigStream = new FileInputStream(firebaseConfigPath);
