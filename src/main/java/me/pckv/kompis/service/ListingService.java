@@ -1,5 +1,10 @@
 package me.pckv.kompis.service;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import java.util.List;
+import java.util.Optional;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.repository.ListingRepository;
@@ -7,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ListingService {
@@ -112,6 +114,26 @@ public class ListingService {
         if (listing.hasAssignee()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Listing already has an assignee");
         }
+
+        System.out.println("Assigning " + assignee + " to " + listing);
+
+        // Send notification to owner about the new assignee
+        if (listing.getOwner().hasFirebaseToken()) {
+            Message message = Message.builder()
+                    .setNotification(Notification.builder()
+                            .setTitle(assignee.getDisplayName())
+                            .setBody("Assigned themselves to your listing " + listing.getTitle())
+                            .build())
+                    .putData("asString",
+                            assignee.getDisplayName() + " assigned themselves to your listing "
+                                    + listing.getTitle())
+                    .setToken(listing.getOwner().getFirebaseToken())
+                    .build();
+
+            System.out.println("Sending notification: " + message.toString());
+            FirebaseMessaging.getInstance().sendAsync(message);
+        }
+
         listing.setAssignee(assignee);
         repository.save(listing);
     }

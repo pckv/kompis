@@ -52,7 +52,7 @@ public class UserController {
 
         // Update the firebase token on login if provided
         if (loginUser.hasFirebaseToken()) {
-            user.setFirebaseToken(loginUser.getFirebaseToken());
+            userService.setFirebaseToken(user, loginUser.getFirebaseToken());
         }
 
         String token = userService.login(user, loginUser.getPassword());
@@ -109,6 +109,6 @@ public class UserController {
     @Authorized
     @PutMapping("/current/firebase")
     public void putFirebaseToken(@RequestParam String token, @LoggedIn User current) {
-        current.setFirebaseToken(token);
+        userService.setFirebaseToken(current, token);
     }
 }
