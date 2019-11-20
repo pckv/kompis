@@ -1,5 +1,6 @@
 package me.pckv.kompis.service;
 
+import me.pckv.kompis.data.Assignee;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.repository.ListingRepository;
@@ -103,12 +104,12 @@ public class ListingService {
     }
 
     /**
-     * Assign a user to the listing and update it.
+     * Assign a assignee to the listing and update it.
      *
      * @param listing  the listing to assign the user to
-     * @param assignee the user to assign to the listing
+     * @param assignee the assignee to assign to the listing
      */
-    public void assignUserToListing(Listing listing, User assignee) {
+    public void assignAssigneeToListing(Listing listing, Assignee assignee) {
         if (listing.hasAssignee()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Listing already has an assignee");
         }
@@ -124,7 +125,7 @@ public class ListingService {
      * @param listing the listing to unassign
      * @param user    the user that unassigns the listing (must be owner or assignee)
      */
-    public void unassignUserFromListing(Listing listing, User user) {
+    public void unassignAssigneeFromListing(Listing listing, User user) {
         if (!listing.isOwner(user) && !listing.isAssignee(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User trying to unassign listing must be owner or assigned");
         }
