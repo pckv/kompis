@@ -22,7 +22,7 @@ public class Listing {
     private boolean driver = false;
     @OneToOne(cascade = {CascadeType.ALL}) private Location location;
     @ManyToOne private User owner;
-    @ManyToOne private User assignee;
+    @ManyToOne(cascade = {CascadeType.ALL}) private Assignee assignee;
 
     /**
      * Returns true if the given user is the owner.
@@ -45,7 +45,7 @@ public class Listing {
             return false;
         }
 
-        return user.equals(assignee);
+        return user.equals(assignee.getUser());
     }
 
     /**
