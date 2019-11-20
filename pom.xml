@@ -83,6 +83,12 @@
             <scope>test</scope>
         </dependency>
 
+      <dependency>
+        <artifactId>firebase-admin</artifactId>
+        <groupId>com.google.firebase</groupId>
+        <version>6.11.0</version>
+      </dependency>
+
     </dependencies>
 
     <properties>

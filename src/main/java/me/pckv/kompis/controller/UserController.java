@@ -1,5 +1,8 @@
 package me.pckv.kompis.controller;
 
+import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import me.pckv.kompis.annotation.Authorized;
 import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.User;
@@ -9,13 +12,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -48,6 +49,11 @@ public class UserController {
     @PostMapping("/authorize")
     public User login(@RequestBody User loginUser, HttpServletResponse response) {
         User user = userService.getUser(loginUser.getEmail());
+
+        // Update the firebase token on login if provided
+        if (loginUser.hasFirebaseToken()) {
+            userService.setFirebaseToken(user, loginUser.getFirebaseToken());
+        }
 
         String token = userService.login(user, loginUser.getPassword());
         response.addHeader("Authorization", "Bearer " + token);
@@ -92,5 +98,17 @@ public class UserController {
     @DeleteMapping("/current")
     public void deleteUser(@LoggedIn User user) {
         userService.deleteUser(user);
+    }
+
+    /**
+     * Update the firebase token for the current authorized user.
+     *
+     * @param token the new firebase token
+     * @param current the currently logged in user
+     */
+    @Authorized
+    @PutMapping("/current/firebase")
+    public void putFirebaseToken(@RequestParam String token, @LoggedIn User current) {
+        userService.setFirebaseToken(current, token);
     }
 }

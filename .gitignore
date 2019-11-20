@@ -1,6 +1,7 @@
 ### Kompis
 /src/main/resources/application-dev.properties
 /src/main/resources/application-prod.properties
+/src/main/resources/google/
 
 /src/test/resources/application-dev.properties
 /src/test/resources/application-prod.properties

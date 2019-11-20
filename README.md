@@ -15,6 +15,7 @@ We will provide a platform where users can ask for someone to drive them home, o
 -   [Get user](#get-user) : `GET /users/{id:number}`
 -   [Get current user](#get-current-user) : `GET /users/current`
 -   [Delete current user](#delete-current-user) : `DELETE /users/current`
+-   [Send firebase token](#send-firebase-token) : `PUT /users/current/firebase`
 
 ### Listings endpoints
 -   [Get listings](#get-listings) : `GET /listings`
@@ -76,7 +77,8 @@ Body:
 POST /users/authorize
 ```
 
-Receive authorization for use with endpoints requiring authorization.
+Receive authorization for use with endpoints requiring authorization. If the client supports
+firebase cloud messaging, a token should be provided in the body.
 
 **Request**
 
@@ -89,7 +91,8 @@ Body:
 ```json
 {
   "email": "roger@example.com",
-  "password": "password"
+  "password": "password",
+  "firebaseToken": "(optional)"
 }
 ```
 
@@ -210,6 +213,45 @@ Authorization: Bearer xxx.yyy.zzz
 Headers:
 ```http
 Authorization: Bearer xxx.yyy.zzz
+```
+
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+
+---
+#### Send firebase token
+```http
+PUT /users/current/firebase
+```
+
+Update the firebase token for the current authorized user.
+
+**Request**
+
+Headers:
+```http
+Authorization: Bearer xxx.yyy.zzz
+```
+
+Parameters:
+-   *token* - the firebase token assigned to the client of the current authorized user
+
+**Responses**
+
+-   `200 OK` on success
+
+Headers:
+```http
+Authorization: Bearer xxx.yyy.zzz
+```
+
+-   `403 FORBIDDEN` if `Authorization` header is invalid
+
+Body:
+```json
+{
+  "id": 1,
+  "displayName": "Roger Doger"
+}
 ```
 
 -   `403 FORBIDDEN` if `Authorization` header is invalid
