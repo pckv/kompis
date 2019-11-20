@@ -339,7 +339,6 @@ Body:
   "title": "Need pickup at Oslo",
   "driver": false, 
   "location": {
-    "id": 10,
     "latitude": "98.76",
     "longitude": "54.32",
     "accuracy": "99.1"
