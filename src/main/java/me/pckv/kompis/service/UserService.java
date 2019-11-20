@@ -1,5 +1,7 @@
 package me.pckv.kompis.service;
 
+import java.util.List;
+import java.util.Optional;
 import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
 import me.pckv.kompis.repository.ListingRepository;
@@ -10,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -117,5 +116,16 @@ public class UserService {
 
         // Generate the JSON web token for the user and send it back
         return jwtManager.generateToken(user.getEmail());
+    }
+
+    /**
+     * Sets the firebase token for the given user.
+     *
+     * @param user the user to set the firebase token to
+     * @param firebaseToken the firebase token
+     */
+    public void setFirebaseToken(User user, String firebaseToken) {
+        user.setFirebaseToken(firebaseToken);
+        repository.save(user);
     }
 }
