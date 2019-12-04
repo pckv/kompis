@@ -11,5 +11,5 @@ public interface ListingRepository extends JpaRepository<Listing, Long> {
 
     List<Listing> findByOwner(User user);
 
-    List<Listing> findByAssigneeExists();
+    List<Listing> findByAssigneeIsNotNull();
 }

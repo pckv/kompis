@@ -176,7 +176,7 @@ public class ListingService {
      * @param user the user
      */
     public void unassignListingsAssignedTo(User user) {
-        List<Listing> assigneeListings = repository.findByAssigneeExists();
+        List<Listing> assigneeListings = repository.findByAssigneeIsNotNull();
         for (Listing listing : assigneeListings) {
             if (listing.getAssignee().getUser().equals(user)) {
                 listing.setAssignee(null);
