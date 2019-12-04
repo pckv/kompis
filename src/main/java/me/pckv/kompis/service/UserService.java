@@ -1,10 +1,7 @@
 package me.pckv.kompis.service;
 
-import java.util.List;
 import java.util.Optional;
-import me.pckv.kompis.data.Listing;
 import me.pckv.kompis.data.User;
-import me.pckv.kompis.repository.ListingRepository;
 import me.pckv.kompis.repository.UserRepository;
 import me.pckv.kompis.security.JwtManager;
 import me.pckv.kompis.security.PasswordUtil;
@@ -18,13 +15,14 @@ public class UserService {
 
     private UserRepository repository;
     private JwtManager jwtManager;
-    private ListingRepository listingRepository;
+    private ListingService listingService;
 
     @Autowired
-    public UserService(UserRepository repository, JwtManager jwtManager, ListingRepository listingRepository) {
+    public UserService(UserRepository repository, JwtManager jwtManager,
+            ListingService listingService) {
         this.repository = repository;
         this.jwtManager = jwtManager;
-        this.listingRepository = listingRepository;
+        this.listingService = listingService;
     }
 
     /**
@@ -34,9 +32,9 @@ public class UserService {
      * @return the user that is created
      */
     public User createUser(User user) {
-        User existingUser = repository.findByEmail(user.getEmail());
-        if (existingUser != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with given email already exists");
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "User with given email already exists");
         }
 
         user.setPassword(PasswordUtil.encrypt(user.getPassword()));
@@ -49,13 +47,14 @@ public class UserService {
      * @param id the id of the user
      * @return user if found
      */
-    public Optional<User> getUser(Long id) {
+    public User getUser(Long id) {
         Optional<User> user = repository.findById(id);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given id was not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User with given id was not found");
         }
 
-        return user;
+        return user.get();
     }
 
     /**
@@ -65,12 +64,13 @@ public class UserService {
      * @return user if found
      */
     public User getUser(String email) {
-        User user = repository.findByEmail(email);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given email was not found");
+        Optional<User> user = repository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User with given email was not found");
         }
 
-        return user;
+        return user.get();
     }
 
     /**
@@ -89,15 +89,12 @@ public class UserService {
      * @param user the user to delete
      */
     public void deleteUser(User user) {
-        List<Listing> ownerListings = listingRepository.findByOwner(user);
-        for (Listing listing : ownerListings) {
-            listingRepository.delete(listing);
-        }
-        List<Listing> assigneeListings = listingRepository.findByAssignee(user);
-        for (Listing listing : assigneeListings) {
-            listing.setAssignee(null);
-            listingRepository.save(listing);
-        }
+        // Remove listings owned by the to-be-deleted user
+        listingService.removeListingsOwnedBy(user);
+
+        // Unassign listings where the to-be-deleted user is assigned
+        listingService.unassignListingsAssignedTo(user);
+
         repository.delete(user);
     }
 

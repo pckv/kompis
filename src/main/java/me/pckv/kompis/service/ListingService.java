@@ -42,7 +42,6 @@ public class ListingService {
      */
     public Listing createListing(Listing listing, User owner) {
         listing.setOwner(owner);
-        System.out.println(listing.toString());
         return repository.save(listing);
     }
 
@@ -66,10 +65,10 @@ public class ListingService {
      * Delete listing if the provided user is the owner of the listing.
      *
      * @param listing the listing to delete
-     * @param user the user to compare with owner
+     * @param owner the user to compare with owner
      */
-    public void deleteListing(Listing listing, User user) {
-        if (!listing.isOwner(user)) {
+    public void deleteListing(Listing listing, User owner) {
+        if (!listing.isOwner(owner)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "User trying to delete listing must be owner of listing");
         }
@@ -157,5 +156,32 @@ public class ListingService {
 
         listing.setAssignee(null);
         repository.save(listing);
+    }
+
+    /**
+     * Remove listings owned by the given user.
+     *
+     * @param user the user
+     */
+    public void removeListingsOwnedBy(User user) {
+        List<Listing> ownerListings = repository.findByOwner(user);
+        for (Listing listing : ownerListings) {
+            repository.delete(listing);
+        }
+    }
+
+    /**
+     * Unassign listings where the given user is assigned.
+     *
+     * @param user the user
+     */
+    public void unassignListingsAssignedTo(User user) {
+        List<Listing> assigneeListings = repository.findByAssigneeExists();
+        for (Listing listing : assigneeListings) {
+            if (listing.getAssignee().getUser().equals(user)) {
+                listing.setAssignee(null);
+                repository.save(listing);
+            }
+        }
     }
 }

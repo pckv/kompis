@@ -1,6 +1,5 @@
 package me.pckv.kompis.controller;
 
-import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import me.pckv.kompis.annotation.Authorized;
@@ -69,7 +68,7 @@ public class UserController {
      */
     @Authorized
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Long id) {
+    public User getUser(@PathVariable long id) {
         return userService.getUser(id);
     }
 

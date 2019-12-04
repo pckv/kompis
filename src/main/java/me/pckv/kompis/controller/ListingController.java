@@ -1,5 +1,7 @@
 package me.pckv.kompis.controller;
 
+import java.util.List;
+import javax.validation.Valid;
 import me.pckv.kompis.annotation.Authorized;
 import me.pckv.kompis.annotation.LoggedIn;
 import me.pckv.kompis.data.Assignee;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/listings")
@@ -110,8 +109,6 @@ public class ListingController {
     @Authorized
     @PostMapping("/{listingId}/assign")
     public void assignListing(Listing listing, @RequestBody Location location, @LoggedIn User assignee) {
-
-        System.out.println(location.toString());
         listingService.assignAssigneeToListing(listing, new Assignee(assignee, location));
     }
 
